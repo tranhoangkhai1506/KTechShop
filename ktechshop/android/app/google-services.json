@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1055766628267",
+    "project_id": "ktech-5aac9",
+    "storage_bucket": "ktech-5aac9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1055766628267:android:6a2049acaf4c807d6774ee",
+        "android_client_info": {
+          "package_name": "com.example.ktechshop"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1055766628267-20nf45e4rtb3mc9ifk9ps3hlhc1cmraj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB3Wsih8lihWcqqxcufIUqD5-SMspL0jrg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1055766628267-20nf45e4rtb3mc9ifk9ps3hlhc1cmraj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

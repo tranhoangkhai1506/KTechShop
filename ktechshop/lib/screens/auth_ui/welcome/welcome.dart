@@ -4,6 +4,7 @@ import 'package:ktechshop/constants/assets_images.dart';
 import 'package:ktechshop/constants/dismension_constants.dart';
 import 'package:ktechshop/constants/routes.dart';
 import 'package:ktechshop/screens/auth_ui/login/login.dart';
+import 'package:ktechshop/screens/auth_ui/sign_up/sign_up.dart';
 import 'package:ktechshop/widgets/primary_button/primary_button.dart';
 import 'package:ktechshop/widgets/top_titles/top_titles.dart';
 
@@ -61,7 +62,11 @@ class Welcome extends StatelessWidget {
             SizedBox(
               height: 12,
             ),
-            PrimaryButton(onPressed: () {}, title: 'Sign Up'),
+            PrimaryButton(
+                onPressed: () {
+                  Routes.instance.push(widget: SignUp(), context: context);
+                },
+                title: 'Sign Up'),
           ],
         ),
       ),

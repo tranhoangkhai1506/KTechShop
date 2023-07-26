@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 ThemeData themData = ThemeData(
     scaffoldBackgroundColor: Colors.white,
+    primaryColor: Color.fromARGB(255, 10, 200, 240),
     inputDecorationTheme: InputDecorationTheme(
         border: outlineInputBorder,
         errorBorder: outlineInputBorder,
@@ -12,7 +13,7 @@ ThemeData themData = ThemeData(
         disabledBorder: outlineInputBorder),
     elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
-            backgroundColor: Color.fromARGB(255, 10, 197, 239),
+            backgroundColor: Color.fromARGB(255, 10, 200, 240),
             disabledBackgroundColor: Colors.grey)));
 
 OutlineInputBorder outlineInputBorder =
