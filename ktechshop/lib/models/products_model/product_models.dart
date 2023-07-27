@@ -10,7 +10,7 @@ class ProductModel {
   String name;
   String id;
   bool isFavourite;
-  String price;
+  double price;
   String description;
   String status;
 
@@ -29,7 +29,7 @@ class ProductModel {
         name: json["name"],
         id: json["id"],
         isFavourite: false,
-        price: json["price"],
+        price: double.parse(json["price"].toString()),
         description: json["description"],
         status: json["status"],
       );
