@@ -1,23 +1,20 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ktechshop/constants/dismension_constants.dart';
 import 'package:ktechshop/constants/routes.dart';
 import 'package:ktechshop/firebase_helper/firebase_firestore_helper/firebase_firestore.dart';
 import 'package:ktechshop/models/categories_model/categories_model.dart';
 import 'package:ktechshop/models/products_model/product_models.dart';
-import 'package:ktechshop/screens/category_view/category_view.dart';
 import 'package:ktechshop/screens/product_details/product_detail.dart';
-import 'package:ktechshop/widgets/top_titles/top_titles.dart';
 
-class Home extends StatefulWidget {
-  const Home({super.key});
+class CategoryView extends StatefulWidget {
+  final CategoriesModel categoryModel;
+  const CategoryView({super.key, required this.categoryModel});
 
   @override
-  State<Home> createState() => _HomeState();
+  State<CategoryView> createState() => _CategoryViewState();
 }
 
-class _HomeState extends State<Home> {
-  List<CategoriesModel> categoriesList = [];
+class _CategoryViewState extends State<CategoryView> {
   List<ProductModel> productModelList = [];
   bool isLoading = false;
   @override
@@ -30,8 +27,8 @@ class _HomeState extends State<Home> {
     setState(() {
       isLoading = true;
     });
-    categoriesList = await FirebaseFirestoreHelper.instance.getCategory();
-    productModelList = await FirebaseFirestoreHelper.instance.getBestProducts();
+    productModelList = await FirebaseFirestoreHelper.instance
+        .getCategoryViewProduct(widget.categoryModel.id);
     productModelList.shuffle();
     setState(() {
       isLoading = false;
@@ -54,103 +51,25 @@ class _HomeState extends State<Home> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  SizedBox(
+                    height: kMediumPadding,
+                  ),
                   Padding(
                     padding: EdgeInsets.all(kDefaultPadding),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                    child: Row(
                       children: [
-                        TopTitles(
-                          title: 'K_Tech',
-                          subTitle: '',
-                        ),
-                        SizedBox(
-                          height: kDefaultPadding / 2,
-                        ),
-                        TextFormField(
-                          decoration: InputDecoration(
-                              enabledBorder: OutlineInputBorder(
-                                borderRadius:
-                                    BorderRadius.circular(kDefaultPadding),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius:
-                                    BorderRadius.circular(kDefaultPadding),
-                              ),
-                              disabledBorder: OutlineInputBorder(
-                                borderRadius:
-                                    BorderRadius.circular(kDefaultPadding),
-                              ),
-                              hintText: 'Search...',
-                              prefixIcon: Icon(
-                                Icons.search,
-                                color: Colors.grey,
-                              )),
+                        BackButton(),
+                        Text(
+                          widget.categoryModel.name,
+                          style: TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.bold),
                         ),
                       ],
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(kDefaultPadding),
-                    child: Text(
-                      'Categories',
-                      style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  categoriesList.isEmpty
-                      ? Center(
-                          child: Text('Categories is empty'),
-                        )
-                      : SingleChildScrollView(
-                          padding: EdgeInsets.only(left: kDefaultPadding),
-                          scrollDirection: Axis.horizontal,
-                          child: Row(
-                              children: categoriesList
-                                  .map((e) => Padding(
-                                        padding: const EdgeInsets.all(
-                                            kDefaultPadding / 2),
-                                        child: CupertinoButton(
-                                          padding: EdgeInsets.zero,
-                                          onPressed: () {
-                                            Routes.instance.push(
-                                                widget: CategoryView(
-                                                  categoryModel: e,
-                                                ),
-                                                context: context);
-                                          },
-                                          child: Card(
-                                            color: Colors.white,
-                                            elevation: 6.0,
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(
-                                                      kDefaultPadding),
-                                            ),
-                                            child: SizedBox(
-                                              height: 100,
-                                              width: 100,
-                                              child: Image.network(e.image),
-                                            ),
-                                          ),
-                                        ),
-                                      ))
-                                  .toList()),
-                        ),
-                  Padding(
-                    padding: EdgeInsets.only(
-                        top: kDefaultPadding, left: kDefaultPadding),
-                    child: Text(
-                      'Best Products',
-                      style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  SizedBox(
-                    height: kDefaultPadding,
-                  ),
                   productModelList.isEmpty
                       ? Center(
-                          child: Text('Best Product is empty'),
+                          child: Text('Product is empty'),
                         )
                       : Padding(
                           padding: const EdgeInsets.all(kDefaultPadding),
