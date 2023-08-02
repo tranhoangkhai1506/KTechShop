@@ -20,5 +20,6 @@ ThemeData themData = ThemeData(
             backgroundColor: Color.fromARGB(255, 10, 200, 240),
             disabledBackgroundColor: Colors.grey)));
 
-OutlineInputBorder outlineInputBorder =
-    OutlineInputBorder(borderSide: BorderSide(color: Colors.grey));
+OutlineInputBorder outlineInputBorder = OutlineInputBorder(
+  borderSide: BorderSide(color: Color.fromARGB(255, 10, 200, 240), width: 10),
+);

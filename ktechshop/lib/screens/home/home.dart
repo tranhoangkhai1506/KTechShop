@@ -155,7 +155,7 @@ class _HomeState extends State<Home> {
                       : Padding(
                           padding: const EdgeInsets.all(kDefaultPadding),
                           child: GridView.builder(
-                            padding: EdgeInsets.zero,
+                            padding: EdgeInsets.only(bottom: 60),
                             shrinkWrap: true,
                             itemCount: productModelList.length,
                             gridDelegate:

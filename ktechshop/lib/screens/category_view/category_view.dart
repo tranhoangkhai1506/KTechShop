@@ -48,6 +48,7 @@ class _CategoryViewState extends State<CategoryView> {
               ),
             )
           : SingleChildScrollView(
+              padding: EdgeInsets.only(bottom: 60),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

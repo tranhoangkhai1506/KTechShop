@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:ktechshop/constants/theme.dart';
 import 'package:ktechshop/firebase_helper/firebase_auth_helper/firebase_auth_helper.dart';
 import 'package:ktechshop/firebase_helper/firebase_options/firebase_options.dart';
+import 'package:ktechshop/provider/app_provider.dart';
 import 'package:ktechshop/screens/auth_ui/welcome/welcome.dart';
-import 'package:ktechshop/screens/home/home.dart';
+import 'package:ktechshop/screens/custom_bottom_bar/custom_bottom_bar.dart';
+import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,18 +23,21 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'K-Tech',
-      home: StreamBuilder(
-          stream: FirebaseAuthHelper.instance.getAuthChange,
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              return Home();
-            }
-            return Welcome();
-          }),
-      theme: themData,
-      debugShowCheckedModeBanner: false,
+    return ChangeNotifierProvider(
+      create: (context) => AppProvider(),
+      child: MaterialApp(
+        title: 'K-Tech',
+        home: StreamBuilder(
+            stream: FirebaseAuthHelper.instance.getAuthChange,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return CustomBottomBar();
+              }
+              return Welcome();
+            }),
+        theme: themData,
+        debugShowCheckedModeBanner: false,
+      ),
     );
   }
 }
