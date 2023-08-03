@@ -4,7 +4,7 @@ import 'package:ktechshop/constants/dismension_constants.dart';
 import 'package:ktechshop/constants/routes.dart';
 import 'package:ktechshop/firebase_helper/firebase_auth_helper/firebase_auth_helper.dart';
 import 'package:ktechshop/screens/auth_ui/sign_up/sign_up.dart';
-import 'package:ktechshop/screens/home/home.dart';
+import 'package:ktechshop/screens/custom_bottom_bar/custom_bottom_bar.dart';
 import 'package:ktechshop/widgets/primary_button/primary_button.dart';
 import 'package:ktechshop/widgets/top_titles/top_titles.dart';
 
@@ -95,7 +95,8 @@ class _LoginState extends State<Login> {
                         .login(email.text, password.text, context);
                     if (isLogined) {
                       // ignore: use_build_context_synchronously
-                      Routes.instance.push(widget: Home(), context: context);
+                      Routes.instance
+                          .push(widget: CustomBottomBar(), context: context);
                     }
                   }
                 },

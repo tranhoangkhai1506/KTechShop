@@ -26,7 +26,10 @@ class _SingleFavouriteItem extends State<SingleFavouriteItem> {
           Expanded(
             flex: 1,
             child: Container(
-              color: Colors.blueGrey.withOpacity(0.5),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(kDefaultPadding),
+                color: Colors.grey.withOpacity(0.5),
+              ),
               height: 140,
               child: Image.network(widget.singleProduct.image),
             ),
@@ -48,7 +51,7 @@ class _SingleFavouriteItem extends State<SingleFavouriteItem> {
                           Text(widget.singleProduct.name,
                               maxLines: 1,
                               style: TextStyle(
-                                fontSize: 16,
+                                fontSize: 15,
                                 overflow: TextOverflow.ellipsis,
                                 fontWeight: FontWeight.bold,
                               )),
@@ -79,7 +82,7 @@ class _SingleFavouriteItem extends State<SingleFavouriteItem> {
                       Text('\$${widget.singleProduct.price.toString()}',
                           maxLines: 1,
                           style: TextStyle(
-                            fontSize: 16,
+                            fontSize: 15,
                             overflow: TextOverflow.ellipsis,
                             fontWeight: FontWeight.bold,
                           )),

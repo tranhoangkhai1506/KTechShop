@@ -5,9 +5,11 @@ import 'package:ktechshop/constants/routes.dart';
 import 'package:ktechshop/firebase_helper/firebase_firestore_helper/firebase_firestore.dart';
 import 'package:ktechshop/models/categories_model/categories_model.dart';
 import 'package:ktechshop/models/products_model/product_models.dart';
+import 'package:ktechshop/provider/app_provider.dart';
 import 'package:ktechshop/screens/category_view/category_view.dart';
 import 'package:ktechshop/screens/product_details/product_detail.dart';
 import 'package:ktechshop/widgets/top_titles/top_titles.dart';
+import 'package:provider/provider.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -23,6 +25,8 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     getCategoryList();
+    AppProvider appProvider = Provider.of<AppProvider>(context, listen: false);
+    appProvider.getUserInfoFirebase();
     super.initState();
   }
 
@@ -32,6 +36,7 @@ class _HomeState extends State<Home> {
     });
     categoriesList = await FirebaseFirestoreHelper.instance.getCategory();
     productModelList = await FirebaseFirestoreHelper.instance.getBestProducts();
+
     productModelList.shuffle();
     setState(() {
       isLoading = false;

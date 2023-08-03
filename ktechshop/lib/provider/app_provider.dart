@@ -1,10 +1,20 @@
+import 'dart:io';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:ktechshop/constants/constants.dart';
+import 'package:ktechshop/firebase_helper/firebase_firestore_helper/firebase_firestore.dart';
+import 'package:ktechshop/firebase_helper/firebase_storage_helper/firebase_storage_helper.dart';
 import 'package:ktechshop/models/products_model/product_models.dart';
+import 'package:ktechshop/models/user_model/user_model.dart';
 
 class AppProvider with ChangeNotifier {
   // Cart Work
   final List<ProductModel> _cartProductList = [];
 
+  UserModel? _userModel;
+
+  UserModel get getUserInformation => _userModel!;
   void addCartProduct(ProductModel productModel) {
     _cartProductList.add(productModel);
     notifyListeners();
@@ -31,4 +41,42 @@ class AppProvider with ChangeNotifier {
   }
 
   List<ProductModel> get getFavouriteProductList => _favouriteProductList;
+
+  void getUserInfoFirebase() async {
+    _userModel = await FirebaseFirestoreHelper.instance.getUserInformation();
+    notifyListeners();
+  }
+
+  void updateUserInforFirebase(
+      BuildContext context, UserModel userModel, File? file) async {
+    if (file == null) {
+      showLoaderDialog(context);
+      _userModel = userModel;
+      await FirebaseFirestore.instance
+          .collection("users")
+          .doc(_userModel!.id)
+          .set(_userModel!.toJson());
+      // ignore: use_build_context_synchronously
+      Navigator.of(context, rootNavigator: true).pop();
+      // ignore: use_build_context_synchronously
+      Navigator.of(context).pop();
+    } else {
+      showLoaderDialog(context);
+
+      String imageUrl =
+          await FirebaseStorageHelper.instance.uploadUserImage(file);
+      _userModel = userModel.copyWith(image: imageUrl);
+      await FirebaseFirestore.instance
+          .collection("users")
+          .doc(_userModel!.id)
+          .set(_userModel!.toJson());
+
+      // ignore: use_build_context_synchronously
+      Navigator.of(context, rootNavigator: true).pop();
+      // ignore: use_build_context_synchronously
+      Navigator.of(context).pop();
+    }
+    showMessage("Saved");
+    notifyListeners();
+  }
 }

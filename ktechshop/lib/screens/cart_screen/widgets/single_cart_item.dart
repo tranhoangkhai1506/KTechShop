@@ -15,11 +15,9 @@ class SingleCartItem extends StatefulWidget {
 
 class _SingleCartItemState extends State<SingleCartItem> {
   int qty = 1;
-  late double priceTotal;
   @override
   void initState() {
     qty = widget.singleProduct.quantity ?? 1;
-    priceTotal = widget.singleProduct.price;
     setState(() {});
     super.initState();
   }
@@ -37,7 +35,10 @@ class _SingleCartItemState extends State<SingleCartItem> {
           Expanded(
             flex: 1,
             child: Container(
-              color: Colors.blueGrey.withOpacity(0.5),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(kDefaultPadding),
+                color: Colors.grey.withOpacity(0.5),
+              ),
               height: 140,
               child: Image.network(widget.singleProduct.image),
             ),
@@ -70,8 +71,6 @@ class _SingleCartItemState extends State<SingleCartItem> {
                                   if (qty > 0) {
                                     setState(() {
                                       qty--;
-                                      priceTotal =
-                                          widget.singleProduct.price * qty;
                                     });
                                   }
                                 },
@@ -90,8 +89,6 @@ class _SingleCartItemState extends State<SingleCartItem> {
                                 onPressed: () {
                                   setState(() {
                                     qty++;
-                                    priceTotal =
-                                        widget.singleProduct.price * qty;
                                   });
                                 },
                                 padding: EdgeInsets.zero,
@@ -128,7 +125,10 @@ class _SingleCartItemState extends State<SingleCartItem> {
                           ),
                         ],
                       ),
-                      Text(qty > 0 ? '\$${priceTotal.toString()}' : '\$${0.0}',
+                      Text(
+                          qty > 0
+                              ? '\$${(qty * widget.singleProduct.price).toString()}'
+                              : '\$${0.0}',
                           maxLines: 1,
                           style: TextStyle(
                             fontSize: 15,
