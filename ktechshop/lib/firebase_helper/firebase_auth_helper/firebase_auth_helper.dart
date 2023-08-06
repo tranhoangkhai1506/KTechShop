@@ -17,11 +17,15 @@ class FirebaseAuthHelper {
       showLoaderDialog(context);
       await _auth.signInWithEmailAndPassword(email: email, password: password);
       // ignore: use_build_context_synchronously
+      Navigator.of(context, rootNavigator: true).pop();
+
+      // ignore: use_build_context_synchronously
       Navigator.of(context).pop();
       // ignore: use_build_context_synchronously
       return true;
     } on FirebaseAuthException catch (e) {
       Navigator.of(context).pop();
+      Navigator.of(context, rootNavigator: true).pop();
       showMessage(e.code.toString());
       return false;
     }
@@ -40,11 +44,14 @@ class FirebaseAuthHelper {
           .doc(userModel.id)
           .set(userModel.toJson());
       // ignore: use_build_context_synchronously
-      Navigator.of(context).pop();
+      Navigator.of(context, rootNavigator: true).pop();
       // ignore: use_build_context_synchronously
+      Navigator.of(context).pop();
+
       return true;
     } on FirebaseAuthException catch (e) {
       Navigator.of(context).pop();
+      Navigator.of(context, rootNavigator: true).pop();
       showMessage(e.code.toString());
       return false;
     }
@@ -52,6 +59,33 @@ class FirebaseAuthHelper {
 
   void signOut() async {
     await _auth.signOut();
+  }
+
+  Future<bool> changePassword(String password, BuildContext context) async {
+    try {
+      showLoaderDialog(context);
+      _auth.currentUser!.updatePassword(password);
+      // UserCredential userCredential = await _auth
+      //     .createUserWithEmailAndPassword(email: email, password: password);
+      // UserModel userModel = UserModel(
+      //     id: userCredential.user!.uid, name: name, email: email, image: null);
+      // _firebaseFirestore
+      //     .collection("users")
+      //     .doc(userModel.id)
+      //     .set(userModel.toJson());
+      // ignore: use_build_context_synchronously
+      Navigator.of(context, rootNavigator: true).pop();
+      showMessage("Password changed");
+      // ignore: use_build_context_synchronously
+      Navigator.of(context).pop();
+
+      return true;
+    } on FirebaseAuthException catch (e) {
+      Navigator.of(context).pop();
+      Navigator.of(context, rootNavigator: true).pop();
+      showMessage(e.code.toString());
+      return false;
+    }
   }
 }
 

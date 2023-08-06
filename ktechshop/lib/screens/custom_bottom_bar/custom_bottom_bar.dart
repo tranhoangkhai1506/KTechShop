@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:ktechshop/screens/account_screen/account_screen.dart';
 import 'package:ktechshop/screens/cart_screen/cart_screen.dart';
-import 'package:ktechshop/screens/favourite_screen/favourite_screen.dart';
+
 import 'package:ktechshop/screens/home/home.dart';
+import 'package:ktechshop/screens/order_screen/order_screen.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 class CustomBottomBar extends StatefulWidget {
@@ -27,7 +28,7 @@ class _CustomBottomBarState extends State<CustomBottomBar> {
   List<Widget> _buildScreens() => [
         Home(),
         CartScreen(),
-        FavouriteScreen(),
+        OrderScreen(),
         AccountScreen(),
       ];
 
@@ -49,9 +50,9 @@ class _CustomBottomBarState extends State<CustomBottomBar> {
           inactiveColorPrimary: Colors.grey,
         ),
         PersistentBottomNavBarItem(
-          icon: const Icon(Icons.favorite),
-          inactiveIcon: Icon(Icons.favorite_border),
-          title: "Fovourite",
+          icon: const Icon(Icons.shopping_bag_sharp),
+          inactiveIcon: Icon(Icons.shopping_bag_outlined),
+          title: "Orders",
           textStyle: TextStyle(fontWeight: FontWeight.bold),
           activeColorPrimary: Colors.pinkAccent,
           inactiveColorPrimary: Colors.grey,

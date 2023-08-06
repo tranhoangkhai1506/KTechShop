@@ -5,6 +5,7 @@ import 'package:ktechshop/constants/dismension_constants.dart';
 import 'package:ktechshop/constants/routes.dart';
 import 'package:ktechshop/models/products_model/product_models.dart';
 import 'package:ktechshop/provider/app_provider.dart';
+import 'package:ktechshop/screens/check_out/check_out.dart';
 import 'package:ktechshop/screens/cart_screen/cart_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -145,8 +146,11 @@ class _ProductDetailsState extends State<ProductDetails> {
                       width: 170,
                       child: ElevatedButton.icon(
                           onPressed: () {
-                            // Routes.instance.push(
-                            //     widget: FavouriteScreen(), context: context);
+                            ProductModel productModel =
+                                widget.singleProduct.copyWith(quantity: qty);
+                            Routes.instance.push(
+                                widget: CheckOut(singleProduct: productModel),
+                                context: context);
                           },
                           icon: Icon(Icons.payment),
                           label: Text('BUY')),

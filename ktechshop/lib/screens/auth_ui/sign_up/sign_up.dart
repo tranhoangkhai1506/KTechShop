@@ -17,8 +17,9 @@ class SignUp extends StatefulWidget {
 
 class _SignUpState extends State<SignUp> {
   bool isShowPassWord = true;
-  TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
+  TextEditingController email = TextEditingController();
+
   TextEditingController name = TextEditingController();
   TextEditingController phone = TextEditingController();
 
@@ -144,7 +145,8 @@ class _SignUpState extends State<SignUp> {
                         .signUp(name.text, email.text, password.text, context);
                     if (isLogined) {
                       // ignore: use_build_context_synchronously
-                      Routes.instance.push(widget: CustomBottomBar(), context: context);
+                      Routes.instance
+                          .push(widget: CustomBottomBar(), context: context);
                     }
                   }
                 },

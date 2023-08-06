@@ -11,6 +11,7 @@ import 'package:ktechshop/models/user_model/user_model.dart';
 class AppProvider with ChangeNotifier {
   // Cart Work
   final List<ProductModel> _cartProductList = [];
+  final List<ProductModel> _buyProductList = [];
 
   UserModel? _userModel;
 
@@ -79,4 +80,44 @@ class AppProvider with ChangeNotifier {
     showMessage("Saved");
     notifyListeners();
   }
+
+  // Total price
+
+  double totalPrice() {
+    double totalPrice = 0.0;
+    for (var element in _cartProductList) {
+      totalPrice += element.price * element.quantity!;
+    }
+    return totalPrice;
+  }
+
+  void updateQuantity(ProductModel productModel, int qty) {
+    int index = _cartProductList.indexOf(productModel);
+    _cartProductList[index].quantity = qty;
+    notifyListeners();
+  }
+
+  // Buy product
+
+  void addBuyProduct(ProductModel productModel) {
+    _buyProductList.add(productModel);
+    notifyListeners();
+  }
+
+  void addBuyProductCart() {
+    _buyProductList.addAll(_cartProductList);
+    notifyListeners();
+  }
+
+  void clearCart() {
+    _cartProductList.clear();
+    notifyListeners();
+  }
+
+  void clearBuyProduct() {
+    _buyProductList.clear();
+    notifyListeners();
+  }
+
+  List<ProductModel> get getBuyProductList => _buyProductList;
 }

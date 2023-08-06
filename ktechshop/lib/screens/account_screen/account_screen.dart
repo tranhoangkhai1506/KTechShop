@@ -3,7 +3,10 @@ import 'package:ktechshop/constants/dismension_constants.dart';
 import 'package:ktechshop/constants/routes.dart';
 import 'package:ktechshop/firebase_helper/firebase_auth_helper/firebase_auth_helper.dart';
 import 'package:ktechshop/provider/app_provider.dart';
+import 'package:ktechshop/screens/auth_ui/welcome/welcome.dart';
+import 'package:ktechshop/screens/change_password/change_password.dart';
 import 'package:ktechshop/screens/edit_profile/edit.profile.dart';
+import 'package:ktechshop/screens/favourite_screen/favourite_screen.dart';
 import 'package:ktechshop/widgets/primary_button/primary_button.dart';
 import 'package:provider/provider.dart';
 
@@ -73,38 +76,55 @@ class _AccountScreenState extends State<AccountScreen> {
             Expanded(
                 flex: 2,
                 child: Padding(
-                  padding: const EdgeInsets.only(left: kDefaultPadding),
-                  child: Column(
-                    children: [
-                      ListTile(
-                        onTap: () {},
-                        leading: Icon(Icons.shopping_bag_outlined),
-                        title: Text("Your Orders"),
-                      ),
-                      ListTile(
-                        onTap: () {},
-                        leading: Icon(Icons.favorite_outline),
-                        title: Text("Favourites"),
-                      ),
-                      ListTile(
-                        onTap: () {},
-                        leading: Icon(Icons.people_alt_outlined),
-                        title: Text("About Us"),
-                      ),
-                      ListTile(
-                        onTap: () {},
-                        leading: Icon(Icons.support_agent_outlined),
-                        title: Text("Support"),
-                      ),
-                      ListTile(
-                        onTap: () {
-                          FirebaseAuthHelper.instance.signOut();
-                          setState(() {});
-                        },
-                        leading: Icon(Icons.logout_outlined),
-                        title: Text("Log out"),
-                      )
-                    ],
+                  padding: const EdgeInsets.only(
+                      left: kDefaultPadding * 2, bottom: kDefaultPadding * 3),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        ListTile(
+                          onTap: () {},
+                          leading: Icon(Icons.shopping_bag_outlined),
+                          title: Text("Your Orders"),
+                        ),
+                        ListTile(
+                          onTap: () {
+                            Routes.instance.push(
+                                widget: FavouriteScreen(), context: context);
+                          },
+                          leading: Icon(Icons.favorite_outline),
+                          title: Text("Favourites"),
+                        ),
+                        ListTile(
+                          onTap: () {},
+                          leading: Icon(Icons.people_alt_outlined),
+                          title: Text("About Us"),
+                        ),
+                        ListTile(
+                          onTap: () {},
+                          leading: Icon(Icons.support_agent_outlined),
+                          title: Text("Support"),
+                        ),
+                        ListTile(
+                          onTap: () {
+                            Routes.instance.push(
+                                widget: ChangePassword(), context: context);
+                          },
+                          leading: Icon(Icons.key_outlined),
+                          title: Text("Change Password"),
+                        ),
+                        ListTile(
+                          onTap: () {
+                            FirebaseAuthHelper.instance.signOut();
+                            setState(() {});
+                            // Routes.instance
+                            //     .push(widget: Welcome(), context: context);
+                          },
+                          leading: Icon(Icons.logout_outlined),
+                          title: Text("Log out"),
+                        ),
+                        Text("Version 1.0.0"),
+                      ],
+                    ),
                   ),
                 ))
           ],
