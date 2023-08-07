@@ -2,6 +2,7 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:ktechshop/constants/constants.dart';
 import 'package:ktechshop/models/categories_model/categories_model.dart';
@@ -128,6 +129,18 @@ class FirebaseFirestoreHelper {
       return orderList;
     } catch (e) {
       return [];
+    }
+  }
+
+  void updateTokenFromFirebase() async {
+    String? token = await FirebaseMessaging.instance.getToken();
+    if (token != null) {
+      await _firebaseFirestore
+          .collection("users")
+          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .update({
+        "notificationToken": token,
+      });
     }
   }
 }

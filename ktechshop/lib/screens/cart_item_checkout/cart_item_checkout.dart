@@ -4,6 +4,7 @@ import 'package:ktechshop/constants/routes.dart';
 import 'package:ktechshop/firebase_helper/firebase_firestore_helper/firebase_firestore.dart';
 import 'package:ktechshop/provider/app_provider.dart';
 import 'package:ktechshop/screens/custom_bottom_bar/custom_bottom_bar.dart';
+import 'package:ktechshop/stripe_helper/striper_helper.dart';
 import 'package:ktechshop/widgets/primary_button/primary_button.dart';
 import 'package:provider/provider.dart';
 
@@ -103,18 +104,28 @@ class _CartItemCheckOut extends State<CartItemCheckOut> {
               ),
               PrimaryButton(
                   onPressed: () async {
-                    bool value = await FirebaseFirestoreHelper.instance
-                        .uploadOrderProductFirebase(
-                            appProvider.getBuyProductList,
-                            context,
-                            groupValue == 1 ? "Cash on delivery" : "Paid");
+                    if (groupValue == 1) {
+                      bool value = await FirebaseFirestoreHelper.instance
+                          .uploadOrderProductFirebase(
+                              appProvider.getBuyProductList,
+                              context,
+                              "Cash on delivery");
 
-                    appProvider.clearBuyProduct();
-                    if (value) {
-                      Future.delayed(Duration(seconds: 2), () {
-                        Routes.instance
-                            .push(widget: CustomBottomBar(), context: context);
-                      });
+                      appProvider.clearBuyProduct();
+                      if (value) {
+                        Future.delayed(Duration(seconds: 2), () {
+                          Routes.instance.push(
+                              widget: CustomBottomBar(), context: context);
+                        });
+                      }
+                    } else {
+                      int value = double.parse(
+                              appProvider.totalPriceBuyProduct().toString())
+                          .round()
+                          .toInt();
+                      String totalPrice = (value * 100).toString();
+                      await StripHelper.instence
+                          .makePayment(totalPrice, context);
                     }
                   },
                   title: "Continues")

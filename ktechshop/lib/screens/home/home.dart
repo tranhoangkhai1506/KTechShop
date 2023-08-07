@@ -34,6 +34,7 @@ class _HomeState extends State<Home> {
     setState(() {
       isLoading = true;
     });
+    FirebaseFirestoreHelper.instance.updateTokenFromFirebase();
     categoriesList = await FirebaseFirestoreHelper.instance.getCategory();
     productModelList = await FirebaseFirestoreHelper.instance.getBestProducts();
 
