@@ -42,8 +42,8 @@ class _ProductDetailsState extends State<ProductDetails> {
               children: [
                 Image.network(
                   widget.singleProduct.image,
-                  height: 200,
-                  width: 300,
+                  height: 250,
+                  width: 350,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -51,7 +51,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                     Text(
                       widget.singleProduct.name,
                       style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                          TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
                     ),
                     IconButton(
                       onPressed: () {
@@ -79,9 +79,10 @@ class _ProductDetailsState extends State<ProductDetails> {
                   widget.singleProduct.description,
                   maxLines: 5,
                   overflow: TextOverflow.ellipsis,
+                  style: TextStyle(fontSize: 20),
                 ),
                 SizedBox(
-                  height: kDefaultPadding,
+                  height: kMediumPadding,
                 ),
                 Row(
                   children: [
@@ -105,7 +106,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                     Text(
                       qty.toString(),
                       style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                          TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
                     ),
                     SizedBox(
                       width: kDefaultPadding,
@@ -129,20 +130,32 @@ class _ProductDetailsState extends State<ProductDetails> {
                 ),
                 Row(
                   children: [
-                    OutlinedButton.icon(
-                        onPressed: () {
-                          ProductModel productModel =
-                              widget.singleProduct.copyWith(quantity: qty);
-                          appProvider.addCartProduct(productModel);
-                          showMessage("Added to Cart");
-                        },
-                        icon: Icon(Icons.shopping_cart),
-                        label: Text('ADD TO CART')),
+                    SizedBox(
+                      height: 50,
+                      width: 180,
+                      child: OutlinedButton.icon(
+                          onPressed: () {
+                            ProductModel productModel =
+                                widget.singleProduct.copyWith(quantity: qty);
+                            appProvider.addCartProduct(productModel);
+                            showMessage("Added to Cart");
+                          },
+                          icon: Icon(
+                            Icons.shopping_cart,
+                            weight: 20,
+                          ),
+                          label: Text(
+                            'ADD TO CART',
+                            style: TextStyle(
+                              fontSize: 18,
+                            ),
+                          )),
+                    ),
                     SizedBox(
                       width: kDefaultPadding,
                     ),
                     SizedBox(
-                      height: 36,
+                      height: 50,
                       width: 170,
                       child: ElevatedButton.icon(
                           onPressed: () {
@@ -152,8 +165,16 @@ class _ProductDetailsState extends State<ProductDetails> {
                                 widget: CheckOut(singleProduct: productModel),
                                 context: context);
                           },
-                          icon: Icon(Icons.payment),
-                          label: Text('BUY')),
+                          icon: Icon(
+                            Icons.payment,
+                            weight: 20,
+                          ),
+                          label: Text(
+                            'BUY NOW',
+                            style: TextStyle(
+                              fontSize: 18,
+                            ),
+                          )),
                     )
                   ],
                 )

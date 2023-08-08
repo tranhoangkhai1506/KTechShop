@@ -48,13 +48,15 @@ class _SingleFavouriteItem extends State<SingleFavouriteItem> {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(widget.singleProduct.name,
-                              maxLines: 1,
-                              style: TextStyle(
-                                fontSize: 15,
-                                overflow: TextOverflow.ellipsis,
-                                fontWeight: FontWeight.bold,
-                              )),
+                          FittedBox(
+                            child: Text(widget.singleProduct.name,
+                                maxLines: 1,
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  overflow: TextOverflow.ellipsis,
+                                  fontWeight: FontWeight.bold,
+                                )),
+                          ),
                           Row(
                             children: [
                               CupertinoButton(

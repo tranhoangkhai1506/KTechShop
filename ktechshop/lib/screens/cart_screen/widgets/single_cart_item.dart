@@ -34,13 +34,15 @@ class _SingleCartItemState extends State<SingleCartItem> {
         children: [
           Expanded(
             flex: 1,
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(kDefaultPadding),
-                color: Colors.grey.withOpacity(0.5),
+            child: Center(
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(kDefaultPadding),
+                  color: Colors.grey.withOpacity(0.5),
+                ),
+                height: 180,
+                child: Image.network(widget.singleProduct.image),
               ),
-              height: 140,
-              child: Image.network(widget.singleProduct.image),
             ),
           ),
           Expanded(
@@ -57,13 +59,15 @@ class _SingleCartItemState extends State<SingleCartItem> {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(widget.singleProduct.name,
-                              maxLines: 1,
-                              style: TextStyle(
-                                fontSize: 15,
-                                overflow: TextOverflow.ellipsis,
-                                fontWeight: FontWeight.bold,
-                              )),
+                          FittedBox(
+                            child: Text(widget.singleProduct.name,
+                                maxLines: 1,
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  overflow: TextOverflow.ellipsis,
+                                  fontWeight: FontWeight.bold,
+                                )),
+                          ),
                           Row(
                             children: [
                               CupertinoButton(
@@ -78,7 +82,7 @@ class _SingleCartItemState extends State<SingleCartItem> {
                                 },
                                 padding: EdgeInsets.zero,
                                 child: CircleAvatar(
-                                  maxRadius: 15,
+                                  maxRadius: 18,
                                   child: Icon(Icons.remove),
                                 ),
                               ),
@@ -98,7 +102,7 @@ class _SingleCartItemState extends State<SingleCartItem> {
                                 },
                                 padding: EdgeInsets.zero,
                                 child: CircleAvatar(
-                                  maxRadius: 15,
+                                  maxRadius: 18,
                                   child: Icon(Icons.add),
                                 ),
                               ),
@@ -124,7 +128,7 @@ class _SingleCartItemState extends State<SingleCartItem> {
                                     ? "Remove to wishlist"
                                     : "Add to wishlist",
                                 style: TextStyle(
-                                  fontSize: 14,
+                                  fontSize: 16,
                                   fontWeight: FontWeight.bold,
                                 )),
                           ),
@@ -136,7 +140,7 @@ class _SingleCartItemState extends State<SingleCartItem> {
                               : '\$${0.0}',
                           maxLines: 1,
                           style: TextStyle(
-                            fontSize: 15,
+                            fontSize: 18,
                             overflow: TextOverflow.ellipsis,
                             fontWeight: FontWeight.bold,
                           )),
@@ -149,7 +153,7 @@ class _SingleCartItemState extends State<SingleCartItem> {
                       showMessage("Removed from Cart");
                     },
                     child: CircleAvatar(
-                      maxRadius: 15,
+                      maxRadius: 18,
                       child: Icon(Icons.delete),
                     ),
                   ),

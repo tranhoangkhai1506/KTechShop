@@ -46,9 +46,12 @@ class _AccountScreenState extends State<AccountScreen> {
                               size: 80,
                             )
                           : CircleAvatar(
-                              radius: 40,
+                              radius: 50,
                               backgroundImage: NetworkImage(
                                   appProvider.getUserInformation.image!)),
+                      SizedBox(
+                        height: kDefaultPadding,
+                      ),
                       Text(appProvider.getUserInformation.name,
                           style: TextStyle(
                             fontSize: 20,
@@ -59,7 +62,7 @@ class _AccountScreenState extends State<AccountScreen> {
                             fontSize: 14,
                           )),
                       Padding(
-                        padding: const EdgeInsets.only(top: 6),
+                        padding: const EdgeInsets.only(top: kDefaultPadding),
                         child: SizedBox(
                           width: 150,
                           child: PrimaryButton(
