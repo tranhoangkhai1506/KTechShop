@@ -40,7 +40,7 @@ class _SingleCartItemState extends State<SingleCartItem> {
                   borderRadius: BorderRadius.circular(kDefaultPadding),
                   color: Colors.grey.withOpacity(0.5),
                 ),
-                height: 180,
+                height: 150,
                 child: Image.network(widget.singleProduct.image),
               ),
             ),

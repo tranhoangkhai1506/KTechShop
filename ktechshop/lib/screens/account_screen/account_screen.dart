@@ -3,10 +3,12 @@ import 'package:ktechshop/constants/dismension_constants.dart';
 import 'package:ktechshop/constants/routes.dart';
 import 'package:ktechshop/firebase_helper/firebase_auth_helper/firebase_auth_helper.dart';
 import 'package:ktechshop/provider/app_provider.dart';
+import 'package:ktechshop/screens/about_screen/about_screen.dart';
 import 'package:ktechshop/screens/change_password/change_password.dart';
 import 'package:ktechshop/screens/edit_profile/edit.profile.dart';
 import 'package:ktechshop/screens/favourite_screen/favourite_screen.dart';
 import 'package:ktechshop/screens/order_screen/order_screen.dart';
+import 'package:ktechshop/screens/support_screen/support_screen.dart';
 import 'package:ktechshop/widgets/primary_button/primary_button.dart';
 import 'package:provider/provider.dart';
 
@@ -101,12 +103,18 @@ class _AccountScreenState extends State<AccountScreen> {
                           title: Text("Favourites"),
                         ),
                         ListTile(
-                          onTap: () {},
+                          onTap: () {
+                            Routes.instance
+                                .push(widget: AboutScreen(), context: context);
+                          },
                           leading: Icon(Icons.people_alt_outlined),
                           title: Text("About Us"),
                         ),
                         ListTile(
-                          onTap: () {},
+                          onTap: () {
+                            Routes.instance.push(
+                                widget: SupportScreen(), context: context);
+                          },
                           leading: Icon(Icons.support_agent_outlined),
                           title: Text("Support"),
                         ),

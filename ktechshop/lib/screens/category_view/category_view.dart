@@ -73,8 +73,12 @@ class _CategoryViewState extends State<CategoryView> {
                           child: Text('Product is empty'),
                         )
                       : Padding(
-                          padding: const EdgeInsets.all(kDefaultPadding),
+                          padding: const EdgeInsets.only(
+                            left: kDefaultPadding,
+                            right: kDefaultPadding,
+                          ),
                           child: GridView.builder(
+                            physics: ScrollPhysics(),
                             padding: EdgeInsets.zero,
                             shrinkWrap: true,
                             itemCount: productModelList.length,

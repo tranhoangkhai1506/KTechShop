@@ -11,4 +11,5 @@ class AssetsImages {
   final String appleImage = "$_imagesPath/apple.png";
   final String bananaImage = "$_imagesPath/banana.png";
   final String watermelonImage = "$_imagesPath/watermelon.png";
+  final String ktechLogo = "$_imagesPath/ktechLogo.png";
 }

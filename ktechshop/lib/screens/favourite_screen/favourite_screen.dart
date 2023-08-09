@@ -21,7 +21,23 @@ class FavouriteScreen extends StatelessWidget {
                 color: Colors.black)),
       ),
       body: appProvider.getFavouriteProductList.isEmpty
-          ? Center(child: Text('Empty'))
+          ? Padding(
+              padding: const EdgeInsets.only(top: 100),
+              child: Center(
+                  child: Column(
+                children: [
+                  Image.network(
+                      "https://happybox.co.za/cdn/shop/products/Empty_Heart-removebg-preview.png?v=1661018359&width=416",
+                      height: 200,
+                      width: 300),
+                  Text('Your Favourite List is empty',
+                      style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black))
+                ],
+              )),
+            )
           : Padding(
               padding: EdgeInsets.only(bottom: 60),
               child: ListView.builder(

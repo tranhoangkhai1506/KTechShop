@@ -71,7 +71,23 @@ class _CartScreenState extends State<CartScreen> {
                 color: Colors.black)),
       ),
       body: appProvider.getCartProductList.isEmpty
-          ? Center(child: Text('Empty'))
+          ? Padding(
+              padding: const EdgeInsets.only(top: 100),
+              child: Center(
+                  child: Column(
+                children: [
+                  Image.network(
+                      "https://cdni.iconscout.com/illustration/free/thumb/free-empty-cart-4085814-3385483.png",
+                      height: 200,
+                      width: 300),
+                  Text('Cart is empty',
+                      style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black))
+                ],
+              )),
+            )
           : ListView.builder(
               padding: EdgeInsets.all(kDefaultPadding),
               itemCount: appProvider.getCartProductList.length,

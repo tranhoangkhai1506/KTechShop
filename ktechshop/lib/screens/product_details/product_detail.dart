@@ -134,6 +134,11 @@ class _ProductDetailsState extends State<ProductDetails> {
                       height: 50,
                       width: 180,
                       child: OutlinedButton.icon(
+                          style: OutlinedButton.styleFrom(
+                            side: BorderSide(
+                                width: 2.0,
+                                color: Theme.of(context).primaryColor),
+                          ),
                           onPressed: () {
                             ProductModel productModel =
                                 widget.singleProduct.copyWith(quantity: qty);
@@ -143,11 +148,13 @@ class _ProductDetailsState extends State<ProductDetails> {
                           icon: Icon(
                             Icons.shopping_cart,
                             weight: 20,
+                            color: Theme.of(context).primaryColor,
                           ),
                           label: Text(
                             'ADD TO CART',
                             style: TextStyle(
                               fontSize: 18,
+                              color: Theme.of(context).primaryColor,
                             ),
                           )),
                     ),

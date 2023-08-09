@@ -30,7 +30,7 @@ class _SingleFavouriteItem extends State<SingleFavouriteItem> {
                 borderRadius: BorderRadius.circular(kDefaultPadding),
                 color: Colors.grey.withOpacity(0.5),
               ),
-              height: 140,
+              height: 150,
               child: Image.network(widget.singleProduct.image),
             ),
           ),
@@ -52,7 +52,7 @@ class _SingleFavouriteItem extends State<SingleFavouriteItem> {
                             child: Text(widget.singleProduct.name,
                                 maxLines: 1,
                                 style: TextStyle(
-                                  fontSize: 15,
+                                  fontSize: 16,
                                   overflow: TextOverflow.ellipsis,
                                   fontWeight: FontWeight.bold,
                                 )),
@@ -72,19 +72,48 @@ class _SingleFavouriteItem extends State<SingleFavouriteItem> {
                                 child: Text('Remove to Wishlist',
                                     maxLines: 1,
                                     style: TextStyle(
-                                      fontSize: 14,
+                                      fontSize: 16,
                                       overflow: TextOverflow.ellipsis,
                                       fontWeight: FontWeight.bold,
                                     )),
                               ),
                             ],
                           ),
+                          SizedBox(
+                            height: 40,
+                            width: 150,
+                            child: OutlinedButton.icon(
+                                style: OutlinedButton.styleFrom(
+                                  side: BorderSide(
+                                      width: 2.0, color: Colors.blue),
+                                ),
+                                onPressed: () {
+                                  AppProvider appProvider =
+                                      Provider.of<AppProvider>(context,
+                                          listen: false);
+                                  ProductModel productModel = widget
+                                      .singleProduct
+                                      .copyWith(quantity: 1);
+                                  appProvider.addCartProduct(productModel);
+                                  showMessage("Added to Cart");
+                                },
+                                icon: Icon(
+                                  Icons.shopping_cart,
+                                  weight: 14,
+                                ),
+                                label: Text(
+                                  'Add to cart',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                  ),
+                                )),
+                          ),
                         ],
                       ),
                       Text('\$${widget.singleProduct.price.toString()}',
                           maxLines: 1,
                           style: TextStyle(
-                            fontSize: 15,
+                            fontSize: 16,
                             overflow: TextOverflow.ellipsis,
                             fontWeight: FontWeight.bold,
                           )),

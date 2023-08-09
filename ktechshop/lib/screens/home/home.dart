@@ -179,6 +179,7 @@ class _HomeState extends State<Home> {
                           ? Padding(
                               padding: const EdgeInsets.all(kDefaultPadding),
                               child: GridView.builder(
+                                physics: ScrollPhysics(),
                                 padding: EdgeInsets.only(bottom: 60),
                                 shrinkWrap: true,
                                 itemCount: seacrhList.length,
@@ -273,6 +274,7 @@ class _HomeState extends State<Home> {
                           : Padding(
                               padding: const EdgeInsets.all(kDefaultPadding),
                               child: GridView.builder(
+                                physics: ScrollPhysics(),
                                 padding: EdgeInsets.only(bottom: 60),
                                 shrinkWrap: true,
                                 itemCount: productModelList.length,
