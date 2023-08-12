@@ -6,7 +6,7 @@ ThemeData themData = ThemeData(
         elevation: 0.0,
         iconTheme: IconThemeData(color: Colors.black)),
     scaffoldBackgroundColor: Colors.white,
-    primaryColor: Color.fromARGB(255, 5, 112, 154),
+    primaryColor: Color.fromARGB(255, 10, 200, 240),
     inputDecorationTheme: InputDecorationTheme(
         border: outlineInputBorder,
         errorBorder: outlineInputBorder,
@@ -21,5 +21,5 @@ ThemeData themData = ThemeData(
             disabledBackgroundColor: Colors.grey)));
 
 OutlineInputBorder outlineInputBorder = OutlineInputBorder(
-  borderSide: BorderSide(color: Color.fromARGB(255, 10, 200, 240), width: 10),
+  borderSide: BorderSide(color: Color.fromARGB(255, 10, 200, 240), width: 5),
 );

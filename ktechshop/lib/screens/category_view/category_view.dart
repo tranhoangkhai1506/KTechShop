@@ -87,7 +87,7 @@ class _CategoryViewState extends State<CategoryView> {
                                     crossAxisCount: 2,
                                     mainAxisSpacing: 20,
                                     crossAxisSpacing: 20,
-                                    childAspectRatio: 0.6),
+                                    childAspectRatio: 0.7),
                             itemBuilder: (ctx, index) {
                               ProductModel singleProduct =
                                   productModelList[index];
@@ -116,13 +116,15 @@ class _CategoryViewState extends State<CategoryView> {
                                       padding: const EdgeInsets.only(
                                           left: kDefaultPadding,
                                           right: kDefaultPadding),
-                                      child: Text(
-                                        singleProduct.name,
-                                        maxLines: 1,
-                                        style: TextStyle(
-                                          fontSize: 16,
-                                          overflow: TextOverflow.ellipsis,
-                                          fontWeight: FontWeight.bold,
+                                      child: FittedBox(
+                                        child: Text(
+                                          singleProduct.name,
+                                          maxLines: 1,
+                                          style: TextStyle(
+                                            fontSize: 16,
+                                            overflow: TextOverflow.ellipsis,
+                                            fontWeight: FontWeight.bold,
+                                          ),
                                         ),
                                       ),
                                     ),

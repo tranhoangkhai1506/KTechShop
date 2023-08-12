@@ -45,6 +45,9 @@ class _ProductDetailsState extends State<ProductDetails> {
                   height: 250,
                   width: 350,
                 ),
+                SizedBox(
+                  height: kDefaultPadding,
+                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
