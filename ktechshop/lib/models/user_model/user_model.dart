@@ -9,19 +9,24 @@ class UserModel {
   String? image;
   String name;
   String email;
+  String? phone;
+  String? address;
 
-  UserModel({
-    required this.id,
-    this.image,
-    required this.name,
-    required this.email,
-  });
+  UserModel(
+      {required this.id,
+      this.image,
+      required this.name,
+      required this.email,
+      this.phone,
+      this.address});
 
   factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
         id: json["id"],
         image: json["image"],
         name: json["name"],
         email: json["email"],
+        phone: json["phone"],
+        address: json["address"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -29,16 +34,15 @@ class UserModel {
         "image": image,
         "name": name,
         "email": email,
+        "phone": phone,
+        "address": address,
       };
 
-  UserModel copyWith({
-    String? name,
-    image,
-  }) =>
-      UserModel(
-        image: image ?? this.image,
-        name: name ?? this.name,
-        id: id,
-        email: email,
-      );
+  UserModel copyWith({String? name, image, phone, address}) => UserModel(
+      image: image ?? this.image,
+      name: name ?? this.name,
+      id: id,
+      email: email,
+      phone: phone,
+      address: address);
 }

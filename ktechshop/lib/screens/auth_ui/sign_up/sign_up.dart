@@ -141,8 +141,12 @@ class _SignUpState extends State<SignUp> {
                   bool isVaildated = signUpVaildation(
                       email.text, password.text, name.text, phone.text);
                   if (isVaildated) {
-                    bool isLogined = await FirebaseAuthHelper.instance
-                        .signUp(name.text, email.text, password.text, context);
+                    bool isLogined = await FirebaseAuthHelper.instance.signUp(
+                        name.text,
+                        email.text,
+                        password.text,
+                        phone.text,
+                        context);
                     if (isLogined) {
                       // ignore: use_build_context_synchronously
                       Routes.instance

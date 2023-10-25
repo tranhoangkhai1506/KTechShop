@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_if_null_operators
+
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
@@ -18,6 +20,21 @@ class EditProfile extends StatefulWidget {
 
 class _EditProfileState extends State<EditProfile> {
   File? image;
+  String _currentAddress = "Loading...";
+
+  @override
+  void initState() {
+    _getCurrentLocation();
+    super.initState();
+  }
+
+  Future<void> _getCurrentLocation() async {
+    AppProvider appProvider = Provider.of<AppProvider>(context, listen: false);
+    String address = await appProvider.getAddressFromCoordinates();
+    setState(() {
+      _currentAddress = address;
+    });
+  }
 
   void takePicture() async {
     XFile? value = await ImagePicker()
@@ -30,6 +47,8 @@ class _EditProfileState extends State<EditProfile> {
   }
 
   TextEditingController name = TextEditingController();
+  TextEditingController address = TextEditingController();
+  TextEditingController phone = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -81,10 +100,54 @@ class _EditProfileState extends State<EditProfile> {
             SizedBox(
               height: kMediumPadding,
             ),
+            TextFormField(
+              controller: address,
+              decoration: InputDecoration(
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(kDefaultPadding),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(kDefaultPadding),
+                  ),
+                  disabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(kDefaultPadding),
+                  ),
+                  hintText: appProvider.getUserInformation.address == "" ||
+                          appProvider.getUserInformation.address == null
+                      ? _currentAddress
+                      : appProvider.getUserInformation.address),
+            ),
+            SizedBox(
+              height: kMediumPadding,
+            ),
+            TextFormField(
+              controller: phone,
+              decoration: InputDecoration(
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(kDefaultPadding),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(kDefaultPadding),
+                  ),
+                  disabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(kDefaultPadding),
+                  ),
+                  hintText: appProvider.getUserInformation.phone),
+            ),
+            SizedBox(
+              height: kMediumPadding,
+            ),
             PrimaryButton(
                 onPressed: () async {
-                  UserModel userModel =
-                      appProvider.getUserInformation.copyWith(name: name.text);
+                  UserModel userModel = appProvider.getUserInformation.copyWith(
+                      name: name.text.isEmpty
+                          ? appProvider.getUserInformation.name
+                          : name.text,
+                      address:
+                          address.text.isEmpty ? _currentAddress : address.text,
+                      phone: phone.text.isEmpty
+                          ? appProvider.getUserInformation.phone
+                          : phone.text);
                   appProvider.updateUserInforFirebase(
                       context, userModel, image);
                 },

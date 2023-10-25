@@ -98,7 +98,7 @@ class FirebaseFirestoreHelper {
         "status": "Pending",
         "totalPrice": totalPrice,
         "payment": payment,
-        "orderid": documentReference.id
+        "orderid": documentReference.id //
       });
       Navigator.of(context, rootNavigator: true).pop();
       showMessage("Ordered Successfully");

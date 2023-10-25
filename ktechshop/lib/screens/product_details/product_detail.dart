@@ -135,7 +135,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                   children: [
                     SizedBox(
                       height: 50,
-                      width: 180,
+                      width: 190,
                       child: OutlinedButton.icon(
                           style: OutlinedButton.styleFrom(
                             side: BorderSide(
@@ -166,7 +166,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                     ),
                     SizedBox(
                       height: 50,
-                      width: 170,
+                      width: 180,
                       child: ElevatedButton.icon(
                           onPressed: () {
                             ProductModel productModel =

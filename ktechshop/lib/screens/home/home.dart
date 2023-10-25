@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_string_interpolations, unnecessary_brace_in_string_interps
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ktechshop/constants/dismension_constants.dart';
@@ -22,11 +24,14 @@ class _HomeState extends State<Home> {
   List<CategoriesModel> categoriesList = [];
   List<ProductModel> productModelList = [];
   bool isLoading = false;
+  String _currentAddress = "Loading...";
+
   @override
   void initState() {
-    getCategoryList();
     AppProvider appProvider = Provider.of<AppProvider>(context, listen: false);
     appProvider.getUserInfoFirebase();
+    _getCurrentLocation();
+    getCategoryList();
     super.initState();
   }
 
@@ -41,6 +46,14 @@ class _HomeState extends State<Home> {
     productModelList.shuffle();
     setState(() {
       isLoading = false;
+    });
+  }
+
+  Future<void> _getCurrentLocation() async {
+    AppProvider appProvider = Provider.of<AppProvider>(context, listen: false);
+    String address = await appProvider.getAddressFromCoordinates();
+    setState(() {
+      _currentAddress = address;
     });
   }
 
@@ -76,11 +89,44 @@ class _HomeState extends State<Home> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         TopTitles(
-                          title: 'K_Tech',
+                          title: 'K - Tech',
                           subTitle: '',
                         ),
+                        Container(
+                          decoration: BoxDecoration(color: Colors.white),
+                          child: Row(
+                            children: [
+                              SizedBox(
+                                  child: Icon(
+                                Icons.location_on,
+                                size: 40,
+                                color: Colors.blue,
+                              )),
+                              SizedBox(
+                                width: kDefaultPadding / 2,
+                              ),
+                              SizedBox(
+                                width: kDefaultPadding / 2,
+                              ),
+                              SizedBox(
+                                width: 300.0,
+                                child: SizedBox(
+                                  child: Text(
+                                    "${_currentAddress}",
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 2,
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
                         SizedBox(
-                          height: kDefaultPadding / 2,
+                          height: kDefaultPadding,
                         ),
                         TextFormField(
                           controller: search,

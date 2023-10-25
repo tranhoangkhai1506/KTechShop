@@ -47,6 +47,8 @@ dependencies:
   flutter_stripe: ^9.3.0
   http: ^1.1.0
   flutter_native_splash: ^2.3.1
+  geolocator: ^10.1.0
+  geocoding: ^2.1.1
 
 dev_dependencies:
   flutter_test:

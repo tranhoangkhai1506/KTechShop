@@ -2,6 +2,8 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:ktechshop/constants/constants.dart';
 import 'package:ktechshop/firebase_helper/firebase_firestore_helper/firebase_firestore.dart';
 import 'package:ktechshop/firebase_helper/firebase_storage_helper/firebase_storage_helper.dart';
@@ -128,4 +130,38 @@ class AppProvider with ChangeNotifier {
   }
 
   List<ProductModel> get getBuyProductList => _buyProductList;
+
+  Future<Position> _getCurrentLocation() async {
+    late bool servicePermission = false;
+    late LocationPermission permission;
+    servicePermission = await Geolocator.isLocationServiceEnabled();
+    if (!servicePermission) {
+      print("service disable");
+    }
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+    }
+
+    return await Geolocator.getCurrentPosition();
+  }
+
+  Position? _currentLocation;
+  String _currentAddress = "";
+
+  Future<String> getAddressFromCoordinates() async {
+    _currentLocation = await _getCurrentLocation();
+    try {
+      List<Placemark> placemarks = await placemarkFromCoordinates(
+          _currentLocation!.latitude, _currentLocation!.longitude);
+
+      Placemark place = placemarks[0];
+
+      _currentAddress =
+          " ${place.street}, ${place.subAdministrativeArea}, ${place.administrativeArea}, ${place.country}";
+    } catch (e) {
+      _currentAddress = "null";
+    }
+    return _currentAddress;
+  }
 }
