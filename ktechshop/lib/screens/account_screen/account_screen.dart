@@ -54,12 +54,12 @@ class _AccountScreenState extends State<AccountScreen> {
                       SizedBox(
                         height: kDefaultPadding,
                       ),
-                      Text(appProvider.getUserInformation.name,
+                      Text(appProvider.getUserInformation.name!,
                           style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
                           )),
-                      Text(appProvider.getUserInformation.email,
+                      Text(appProvider.getUserInformation.email!,
                           style: TextStyle(
                             fontSize: 14,
                           )),

@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:ktechshop/constants/constants.dart';
 import 'package:ktechshop/models/user_model/user_model.dart';
 
@@ -8,8 +11,46 @@ class FirebaseAuthHelper {
   static FirebaseAuthHelper instance = FirebaseAuthHelper();
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  //final String? _auth1 = FirebaseAuth.instance.currentUser!.displayName;
   final FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
   Stream<User?> get getAuthChange => _auth.authStateChanges();
+
+  // gg login
+  FutureOr<bool> signInWithGoogle() async {
+    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+
+    final GoogleSignInAuthentication googleAuth =
+        await googleUser!.authentication;
+    final AuthCredential credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth.accessToken,
+      idToken: googleAuth.idToken,
+    );
+
+    try {
+      final UserCredential userCredential =
+          await _auth.signInWithCredential(credential);
+
+      UserModel userModel = UserModel(
+          id: _auth.currentUser!.uid,
+          name: _auth.currentUser!.displayName,
+          email: _auth.currentUser!.email,
+          phone: _auth.currentUser!.phoneNumber != "null"
+              ? "null"
+              : _auth.currentUser!.phoneNumber,
+          address: null,
+          image: null);
+      _firebaseFirestore
+          .collection("users")
+          .doc(userModel.id)
+          .set(userModel.toJson());
+      //print(_auth1);
+      return true;
+    } catch (e) {
+      // Xử lý lỗi
+      print("Lỗi đăng nhập bằng Google: $e");
+      return false;
+    }
+  }
 
   Future<bool> login(
       String email, String password, BuildContext context) async {

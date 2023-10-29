@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:ktechshop/constants/assets_images.dart';
 import 'package:ktechshop/constants/dismension_constants.dart';
 import 'package:ktechshop/constants/routes.dart';
-import 'package:ktechshop/google_auth/auth_service.dart';
 import 'package:ktechshop/screens/auth_ui/login/login.dart';
 import 'package:ktechshop/screens/auth_ui/sign_up/sign_up.dart';
 import 'package:ktechshop/widgets/primary_button/primary_button.dart';
 import 'package:ktechshop/widgets/top_titles/top_titles.dart';
+
+import '../../../firebase_helper/firebase_auth_helper/firebase_auth_helper.dart';
+import '../../custom_bottom_bar/custom_bottom_bar.dart';
 
 class Welcome extends StatelessWidget {
   const Welcome({super.key});
@@ -42,8 +44,14 @@ class Welcome extends StatelessWidget {
                   width: 6,
                 ),
                 CupertinoButton(
-                  onPressed:  () async {
-                    await AuthService().signInWithGoogle();
+                  onPressed: () async {
+                    bool isLogined =
+                        await FirebaseAuthHelper.instance.signInWithGoogle();
+                    if (isLogined) {
+                      // ignore: use_build_context_synchronously
+                      Routes.instance
+                          .push(widget: CustomBottomBar(), context: context);
+                    }
                   },
                   // padding: EdgeInsets.zero,
                   child: Image.asset(

@@ -4,7 +4,6 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:ktechshop/constants/routes.dart';
 import 'package:ktechshop/screens/auth_ui/login/login.dart';
 import 'package:ktechshop/screens/custom_bottom_bar/custom_bottom_bar.dart';
-import 'package:ktechshop/screens/home/home.dart';
 
 class AuthService {
   handleAuthState() {
@@ -12,8 +11,6 @@ class AuthService {
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (BuildContext context, snapshot) {
           if (snapshot.hasData) {
-            print("ok");
-            //Routes.instance.push(widget: CustomBottomBar(), context: context);
             return CustomBottomBar();
           } else {
             print("loi");
@@ -23,11 +20,9 @@ class AuthService {
   }
 
   Future<User?> signInWithGoogle() async {
-    print("step 1");
     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
 
     if (googleUser == null) {
-      print("step k dn");
       return null;
     }
 
@@ -38,16 +33,9 @@ class AuthService {
       idToken: googleAuth.idToken,
     );
 
-    if (credential != null) {
-      print("have");
-    } else {
-      print("null");
-    }
-
     try {
       final UserCredential userCredential =
           await FirebaseAuth.instance.signInWithCredential(credential);
-      print("ok");
       print(userCredential.user!.email.toString());
       return userCredential.user;
     } catch (e) {
