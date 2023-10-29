@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:ktechshop/constants/assets_images.dart';
 import 'package:ktechshop/constants/dismension_constants.dart';
 import 'package:ktechshop/constants/routes.dart';
+import 'package:ktechshop/google_auth/auth_service.dart';
 import 'package:ktechshop/screens/auth_ui/login/login.dart';
 import 'package:ktechshop/screens/auth_ui/sign_up/sign_up.dart';
 import 'package:ktechshop/widgets/primary_button/primary_button.dart';
@@ -41,8 +42,10 @@ class Welcome extends StatelessWidget {
                   width: 6,
                 ),
                 CupertinoButton(
-                  onPressed: () {},
-                  padding: EdgeInsets.zero,
+                  onPressed:  () async {
+                    await AuthService().signInWithGoogle();
+                  },
+                  // padding: EdgeInsets.zero,
                   child: Image.asset(
                     AssetsImages.instance.googleLogo,
                     scale: 7,
