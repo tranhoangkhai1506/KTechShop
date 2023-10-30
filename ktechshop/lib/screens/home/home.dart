@@ -96,20 +96,15 @@ class _HomeState extends State<Home> {
                           decoration: BoxDecoration(color: Colors.white),
                           child: Row(
                             children: [
-                              SizedBox(
+                              Expanded(
+                                  flex: 1,
                                   child: Icon(
-                                Icons.location_on,
-                                size: 40,
-                                color: Colors.blue,
-                              )),
-                              SizedBox(
-                                width: kDefaultPadding / 2,
-                              ),
-                              SizedBox(
-                                width: kDefaultPadding / 2,
-                              ),
-                              SizedBox(
-                                width: 300.0,
+                                    Icons.location_on,
+                                    size: 40,
+                                    color: Colors.blue,
+                                  )),
+                              Expanded(
+                                flex: 5,
                                 child: SizedBox(
                                   child: Text(
                                     "${_currentAddress}",

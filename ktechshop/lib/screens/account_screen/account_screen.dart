@@ -30,14 +30,14 @@ class _AccountScreenState extends State<AccountScreen> {
           backgroundColor: Colors.white,
           title: Text('Profile',
               style: TextStyle(
-                  fontSize: 18,
+                  fontSize: 20,
                   fontWeight: FontWeight.bold,
                   color: Colors.black)),
         ),
         body: Column(
           children: [
             Expanded(
-                flex: 1,
+                flex: 2,
                 child: Container(
                   alignment: Alignment.center,
                   child: Column(
@@ -45,10 +45,10 @@ class _AccountScreenState extends State<AccountScreen> {
                       appProvider.getUserInformation.image == null
                           ? Icon(
                               Icons.person_outlined,
-                              size: 80,
+                              size: 90,
                             )
                           : CircleAvatar(
-                              radius: 50,
+                              radius: 60,
                               backgroundImage: NetworkImage(
                                   appProvider.getUserInformation.image!)),
                       SizedBox(
@@ -61,7 +61,7 @@ class _AccountScreenState extends State<AccountScreen> {
                           )),
                       Text(appProvider.getUserInformation.email!,
                           style: TextStyle(
-                            fontSize: 14,
+                            fontSize: 16,
                           )),
                       Padding(
                         padding: const EdgeInsets.only(top: kDefaultPadding),
@@ -82,7 +82,9 @@ class _AccountScreenState extends State<AccountScreen> {
                 flex: 2,
                 child: Padding(
                   padding: const EdgeInsets.only(
-                      left: kDefaultPadding * 2, bottom: kDefaultPadding * 3),
+                      left: kDefaultPadding * 2,
+                      bottom: kDefaultPadding * 3,
+                      right: kDefaultPadding),
                   child: SingleChildScrollView(
                     child: Column(
                       children: [

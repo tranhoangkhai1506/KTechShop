@@ -38,7 +38,7 @@ class FirebaseAuthHelper {
               ? "null"
               : _auth.currentUser!.phoneNumber,
           address: null,
-          image: null);
+          image: _auth.currentUser!.photoURL);
       _firebaseFirestore
           .collection("users")
           .doc(userModel.id)

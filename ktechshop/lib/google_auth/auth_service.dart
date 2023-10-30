@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:ktechshop/constants/routes.dart';
 import 'package:ktechshop/screens/auth_ui/login/login.dart';
 import 'package:ktechshop/screens/custom_bottom_bar/custom_bottom_bar.dart';
 
