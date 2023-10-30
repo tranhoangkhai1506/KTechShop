@@ -13,6 +13,7 @@ import 'package:ktechshop/models/user_model/user_model.dart';
 class FirebaseFirestoreHelper {
   static FirebaseFirestoreHelper instance = FirebaseFirestoreHelper();
   final FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   Future<List<CategoriesModel>> getCategory() async {
     try {
@@ -83,13 +84,15 @@ class FirebaseFirestoreHelper {
           .collection("orders")
           .doc();
 
-      DocumentReference admin = _firebaseFirestore.collection("orders").doc();
-
+      DocumentReference admin =
+          _firebaseFirestore.collection("orders").doc(documentReference.id);
+      String uid = FirebaseAuth.instance.currentUser!.uid;
       admin.set({
         "products": list.map((e) => e.toJson()),
         "status": "Pending",
         "totalPrice": totalPrice,
         "payment": payment,
+        "userId": uid,
         "orderid": admin.id
       });
 
@@ -98,6 +101,7 @@ class FirebaseFirestoreHelper {
         "status": "Pending",
         "totalPrice": totalPrice,
         "payment": payment,
+        "userId": uid,
         "orderid": documentReference.id //
       });
       Navigator.of(context, rootNavigator: true).pop();

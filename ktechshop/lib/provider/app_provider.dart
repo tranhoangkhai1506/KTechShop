@@ -162,6 +162,7 @@ class AppProvider with ChangeNotifier {
     } catch (e) {
       _currentAddress = "null";
     }
+    notifyListeners();
     return _currentAddress;
   }
 }

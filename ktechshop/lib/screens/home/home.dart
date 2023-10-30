@@ -25,7 +25,6 @@ class _HomeState extends State<Home> {
   List<ProductModel> productModelList = [];
   bool isLoading = false;
   String _currentAddress = "Loading...";
-
   @override
   void initState() {
     AppProvider appProvider = Provider.of<AppProvider>(context, listen: false);
@@ -106,15 +105,28 @@ class _HomeState extends State<Home> {
                               Expanded(
                                 flex: 5,
                                 child: SizedBox(
-                                  child: Text(
-                                    "${_currentAddress}",
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 2,
+                                  child: Consumer<AppProvider>(
+                                    builder: (context, appProvider, child) {
+                                      return Text(
+                                        "${_currentAddress}",
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: 2,
+                                      );
+                                    },
                                   ),
+                                  // child: Text(
+                                  //   "${_currentAddress}",
+                                  //   style: TextStyle(
+                                  //     fontSize: 14,
+                                  //     fontWeight: FontWeight.bold,
+                                  //   ),
+                                  //   overflow: TextOverflow.ellipsis,
+                                  //   maxLines: 2,
+                                  // ),
                                 ),
                               )
                             ],
