@@ -50,6 +50,7 @@ dependencies:
   geolocator: ^10.1.0
   geocoding: ^2.1.1
   google_sign_in: ^6.1.5
+  adaptive_theme: ^3.4.1
 
 dev_dependencies:
   flutter_test:

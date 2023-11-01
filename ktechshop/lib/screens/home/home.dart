@@ -66,6 +66,30 @@ class _HomeState extends State<Home> {
     setState(() {});
   }
 
+  ThemeData lightTheme = ThemeData.light().copyWith(
+    textTheme: TextTheme(
+      // ignore: deprecated_member_use
+      bodyText1: TextStyle(
+        color: Colors.black,
+        fontSize: 14,
+        fontWeight: FontWeight.bold,
+      ),
+    ),
+    scaffoldBackgroundColor: Colors.white,
+  );
+
+  ThemeData darkTheme = ThemeData.dark().copyWith(
+    textTheme: TextTheme(
+      // ignore: deprecated_member_use
+      bodyText1: TextStyle(
+        color: Colors.white,
+        fontSize: 14,
+        fontWeight: FontWeight.bold,
+      ),
+    ),
+    scaffoldBackgroundColor: Colors.black,
+  );
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -91,20 +115,23 @@ class _HomeState extends State<Home> {
                           title: 'K - Tech',
                           subTitle: '',
                         ),
-                        Container(
-                          decoration: BoxDecoration(color: Colors.white),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                  flex: 1,
-                                  child: Icon(
-                                    Icons.location_on,
-                                    size: 40,
-                                    color: Colors.blue,
-                                  )),
-                              Expanded(
-                                flex: 5,
-                                child: SizedBox(
+                        Row(
+                          children: [
+                            Expanded(
+                                flex: 1,
+                                child: Icon(
+                                  Icons.location_on,
+                                  size: 40,
+                                  color: Colors.blue,
+                                )),
+                            Expanded(
+                              flex: 5,
+                              child: SizedBox(
+                                child: Theme(
+                                  data: Theme.of(context).brightness ==
+                                          Brightness.dark
+                                      ? darkTheme
+                                      : lightTheme,
                                   child: Consumer<AppProvider>(
                                     builder: (context, appProvider, child) {
                                       return Text(
@@ -118,19 +145,10 @@ class _HomeState extends State<Home> {
                                       );
                                     },
                                   ),
-                                  // child: Text(
-                                  //   "${_currentAddress}",
-                                  //   style: TextStyle(
-                                  //     fontSize: 14,
-                                  //     fontWeight: FontWeight.bold,
-                                  //   ),
-                                  //   overflow: TextOverflow.ellipsis,
-                                  //   maxLines: 2,
-                                  // ),
                                 ),
-                              )
-                            ],
-                          ),
+                              ),
+                            )
+                          ],
                         ),
                         SizedBox(
                           height: kDefaultPadding,

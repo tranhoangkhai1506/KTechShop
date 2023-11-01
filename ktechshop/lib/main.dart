@@ -42,7 +42,15 @@ class _MyAppState extends State<MyApp> {
               }
               return Welcome();
             }),
-        theme: themData,
+        theme: ThemeData.light(useMaterial3: true),
+        darkTheme: ThemeData.dark().copyWith(
+          useMaterial3: true,
+          primaryColor: Colors.indigo,
+          hintColor: Colors.amber,
+          brightness: Brightness.dark,
+          canvasColor: Colors.purple,
+        ),
+        themeMode: ThemeMode.system,
         debugShowCheckedModeBanner: false,
       ),
     );
