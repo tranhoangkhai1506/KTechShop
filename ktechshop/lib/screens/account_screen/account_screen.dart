@@ -130,9 +130,7 @@ class _AccountScreenState extends State<AccountScreen> {
                         ),
                         ListTile(
                           onTap: () async {
-                            setState(() {
-                              FirebaseAuthHelper.instance.signOut(context);
-                            });
+                            FirebaseAuthHelper.instance.signOut(context);
                             // Routes.instance
                             //     .push(widget: Welcome(), context: context);
                           },

@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:ktechshop/constants/constants.dart';
 import 'package:ktechshop/models/user_model/user_model.dart';
@@ -30,24 +31,34 @@ class FirebaseAuthHelper {
     try {
       final UserCredential userCredential =
           await _auth.signInWithCredential(credential);
+      final userId = _auth.currentUser!.uid;
+      final userDoc =
+          await _firebaseFirestore.collection("users").doc(userId).get();
+      if (userDoc.exists) {
+        // Người dùng đã tồn tại
+        // ignore: avoid_print
+        print("Người dùng đã tồn tại.");
+      } else {
+        // Người dùng chưa tồn tại
+        UserModel userModel = UserModel(
+            id: _auth.currentUser!.uid,
+            name: _auth.currentUser!.displayName,
+            email: _auth.currentUser!.email,
+            phone: _auth.currentUser!.phoneNumber != "null"
+                ? "null"
+                : _auth.currentUser!.phoneNumber,
+            address: null,
+            image: _auth.currentUser!.photoURL);
+        _firebaseFirestore
+            .collection("users")
+            .doc(userModel.id)
+            .set(userModel.toJson());
+      }
 
-      UserModel userModel = UserModel(
-          id: _auth.currentUser!.uid,
-          name: _auth.currentUser!.displayName,
-          email: _auth.currentUser!.email,
-          // phone: _auth.currentUser!.phoneNumber != "null"
-          //     ? "null"
-          //     : _auth.currentUser!.phoneNumber,
-          // address: null,
-          image: _auth.currentUser!.photoURL);
-      _firebaseFirestore
-          .collection("users")
-          .doc(userModel.id)
-          .set(userModel.toJson());
-      //print(_auth1);
       return true;
     } catch (e) {
       // Xử lý lỗi
+      // ignore: avoid_print
       print("Lỗi đăng nhập bằng Google: $e");
       return false;
     }
@@ -104,27 +115,22 @@ class FirebaseAuthHelper {
     }
   }
 
+  final GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email']);
+
   void signOut(BuildContext context) async {
-    // Thực hiện đăng xuất ở đây (ví dụ: _auth.signOut() và _googleSignIn.signOut())
+    final FirebaseAuth _auth = FirebaseAuth.instance;
+    final GoogleSignIn _googleSignIn = GoogleSignIn();
+
     await _auth.signOut();
-    // ignore: use_build_context_synchronously
-    //Routes.instance.push(widget: Welcome(), context: context);
-    // Điều hướng người dùng đến trang đăng nhập hoặc màn hình khởi đầu
-    // ignore: use_build_context_synchronously
-    // Navigator.pushAndRemoveUntil(
-    //   context,
-    //   MaterialPageRoute(
-    //       builder: (context) =>
-    //           Welcome()), // Thay YourLoginPage bằng màn hình đăng nhập của bạn
-    //   (route) => false, // Loại bỏ tất cả màn hình khỏi ngăn xếp
-    // );
+
+    await _googleSignIn.signOut();
+
     // ignore: use_build_context_synchronously
     Navigator.push(
-      context,
-      MaterialPageRoute(
-          builder: (context) =>
-              Welcome()), // Thay OtherScreen bằng màn hình khác bạn muốn hiển thị
-    );
+        context,
+        MaterialPageRoute(
+          builder: (context) => Welcome(),
+        ));
   }
 
   Future<bool> changePassword(String password, BuildContext context) async {
