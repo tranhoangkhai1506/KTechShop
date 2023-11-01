@@ -116,6 +116,34 @@ class _OrderScreenState extends State<OrderScreen> {
                                         fontSize: 13,
                                         overflow: TextOverflow.ellipsis,
                                       )),
+                                  SizedBox(
+                                    height: kDefaultPadding,
+                                  ),
+                                  orderModel.status == "Pending" ||
+                                          orderModel.status == "Delivery"
+                                      ? ElevatedButton(
+                                          onPressed: () async {
+                                            await FirebaseFirestoreHelper
+                                                .instance
+                                                .updateOrder(
+                                                    orderModel, "Cancel");
+                                            orderModel.status = "Cancel";
+                                            setState(() {});
+                                          },
+                                          child: Text("Cancel Order"))
+                                      : SizedBox.fromSize(),
+                                  orderModel.status == "Delivery"
+                                      ? ElevatedButton(
+                                          onPressed: () async {
+                                            await FirebaseFirestoreHelper
+                                                .instance
+                                                .updateOrder(
+                                                    orderModel, "Completed");
+                                            orderModel.status = "Completed";
+                                            setState(() {});
+                                          },
+                                          child: Text("Delivered Order"))
+                                      : SizedBox.fromSize(),
                                 ],
                               ),
                             ),

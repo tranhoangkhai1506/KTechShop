@@ -1,5 +1,4 @@
 // ignore_for_file: use_build_context_synchronously
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -13,7 +12,6 @@ import 'package:ktechshop/models/user_model/user_model.dart';
 class FirebaseFirestoreHelper {
   static FirebaseFirestoreHelper instance = FirebaseFirestoreHelper();
   final FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
-  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   Future<List<CategoriesModel>> getCategory() async {
     try {
@@ -89,7 +87,7 @@ class FirebaseFirestoreHelper {
       String uid = FirebaseAuth.instance.currentUser!.uid;
       admin.set({
         "products": list.map((e) => e.toJson()),
-        "status": "Pending",
+        "status": "Pending",  
         "totalPrice": totalPrice,
         "payment": payment,
         "userId": uid,
@@ -146,5 +144,23 @@ class FirebaseFirestoreHelper {
         "notificationToken": token,
       });
     }
+  }
+
+  Future<void> updateOrder(OrderModel orderModel, String status) async {
+    await _firebaseFirestore
+        .collection("usersOrders")
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .collection("orders")
+        .doc(orderModel.orderid)
+        .update({
+      "status": status,
+    });
+
+    await _firebaseFirestore
+        .collection("orders")
+        .doc(orderModel.orderid)
+        .update({
+      "status": status,
+    });
   }
 }
