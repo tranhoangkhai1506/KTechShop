@@ -79,7 +79,7 @@ class _AccountScreenState extends State<AccountScreen> {
                   ),
                 )),
             Expanded(
-                flex: 2,
+                flex: 4,
                 child: Padding(
                   padding: const EdgeInsets.only(
                       left: kDefaultPadding * 2,
@@ -129,9 +129,10 @@ class _AccountScreenState extends State<AccountScreen> {
                           title: Text("Change Password"),
                         ),
                         ListTile(
-                          onTap: () {
-                            FirebaseAuthHelper.instance.signOut();
-                            setState(() {});
+                          onTap: () async {
+                            setState(() {
+                              FirebaseAuthHelper.instance.signOut(context);
+                            });
                             // Routes.instance
                             //     .push(widget: Welcome(), context: context);
                           },

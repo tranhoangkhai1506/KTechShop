@@ -2,10 +2,11 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:ktechshop/constants/constants.dart';
 import 'package:ktechshop/models/user_model/user_model.dart';
+import 'package:ktechshop/screens/auth_ui/welcome/welcome.dart';
 
 class FirebaseAuthHelper {
   static FirebaseAuthHelper instance = FirebaseAuthHelper();
@@ -34,10 +35,10 @@ class FirebaseAuthHelper {
           id: _auth.currentUser!.uid,
           name: _auth.currentUser!.displayName,
           email: _auth.currentUser!.email,
-          phone: _auth.currentUser!.phoneNumber != "null"
-              ? "null"
-              : _auth.currentUser!.phoneNumber,
-          address: null,
+          // phone: _auth.currentUser!.phoneNumber != "null"
+          //     ? "null"
+          //     : _auth.currentUser!.phoneNumber,
+          // address: null,
           image: _auth.currentUser!.photoURL);
       _firebaseFirestore
           .collection("users")
@@ -103,8 +104,27 @@ class FirebaseAuthHelper {
     }
   }
 
-  void signOut() async {
+  void signOut(BuildContext context) async {
+    // Thực hiện đăng xuất ở đây (ví dụ: _auth.signOut() và _googleSignIn.signOut())
     await _auth.signOut();
+    // ignore: use_build_context_synchronously
+    //Routes.instance.push(widget: Welcome(), context: context);
+    // Điều hướng người dùng đến trang đăng nhập hoặc màn hình khởi đầu
+    // ignore: use_build_context_synchronously
+    // Navigator.pushAndRemoveUntil(
+    //   context,
+    //   MaterialPageRoute(
+    //       builder: (context) =>
+    //           Welcome()), // Thay YourLoginPage bằng màn hình đăng nhập của bạn
+    //   (route) => false, // Loại bỏ tất cả màn hình khỏi ngăn xếp
+    // );
+    // ignore: use_build_context_synchronously
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) =>
+              Welcome()), // Thay OtherScreen bằng màn hình khác bạn muốn hiển thị
+    );
   }
 
   Future<bool> changePassword(String password, BuildContext context) async {

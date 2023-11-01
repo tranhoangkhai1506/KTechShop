@@ -79,7 +79,6 @@ class _CustomBottomBarState extends State<CustomBottomBar> {
               ? 0.0
               : kBottomNavigationBarHeight,
           bottomScreenMargin: 0,
-
           backgroundColor: Colors.white70,
           hideNavigationBar: _hideNavBar,
           decoration: const NavBarDecoration(colorBehindNavBar: Colors.indigo),
