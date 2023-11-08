@@ -25,10 +25,9 @@ class _CheckOutState extends State<CheckOut> {
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          backgroundColor: Colors.white,
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           title: Text(
             "Check Out",
-            style: TextStyle(color: Colors.black),
           ),
         ),
         body: Padding(

@@ -23,10 +23,9 @@ class _CartItemCheckOut extends State<CartItemCheckOut> {
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          backgroundColor: Colors.white,
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           title: Text(
             "Check Out",
-            style: TextStyle(color: Colors.black),
           ),
         ),
         body: Padding(

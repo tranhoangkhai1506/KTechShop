@@ -27,12 +27,12 @@ class _AccountScreenState extends State<AccountScreen> {
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          backgroundColor: Colors.white,
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           title: Text('Profile',
               style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black)),
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              )),
         ),
         body: Column(
           children: [

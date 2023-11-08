@@ -16,10 +16,9 @@ class _OrderScreenState extends State<OrderScreen> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        backgroundColor: Colors.white,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         title: Text(
           "Orders",
-          style: TextStyle(color: Colors.black),
         ),
       ),
       body: FutureBuilder(

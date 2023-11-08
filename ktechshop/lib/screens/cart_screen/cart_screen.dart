@@ -63,12 +63,12 @@ class _CartScreenState extends State<CartScreen> {
       ),
       appBar: AppBar(
         centerTitle: true,
-        backgroundColor: Colors.white,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         title: Text('Your Cart',
             style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: Colors.black)),
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            )),
       ),
       body: appProvider.getCartProductList.isEmpty
           ? Padding(

@@ -79,7 +79,7 @@ class _CustomBottomBarState extends State<CustomBottomBar> {
               ? 0.0
               : kBottomNavigationBarHeight,
           bottomScreenMargin: 0,
-          backgroundColor: Colors.white70,
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           hideNavigationBar: _hideNavBar,
           decoration: const NavBarDecoration(colorBehindNavBar: Colors.indigo),
           itemAnimationProperties: const ItemAnimationProperties(

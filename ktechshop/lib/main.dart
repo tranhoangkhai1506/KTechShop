@@ -1,3 +1,4 @@
+import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
@@ -38,18 +39,57 @@ class _MyAppState extends State<MyApp> {
             stream: FirebaseAuthHelper.instance.getAuthChange,
             builder: (context, snapshot) {
               if (snapshot.hasData) {
-                return CustomBottomBar();
+                return AnimatedSplashScreen(
+                  duration: 3000,
+                  splashTransition: SplashTransition.fadeTransition,
+                  splash: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          height: 78,
+                          width: 200,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(30.0),
+                          ),
+                          child: Image.asset('assets/images/ktechLogo.png'),
+                        ),
+                      ],
+                    ),
+                  ),
+                  nextScreen: CustomBottomBar(),
+                );
               }
-              return Welcome();
+              return AnimatedSplashScreen(
+                duration: 3000,
+                splashTransition: SplashTransition.fadeTransition,
+                splash: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        height: 78,
+                        width: 200,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(30.0),
+                        ),
+                        child: Image.asset('assets/images/ktechLogo.png'),
+                      ),
+                    ],
+                  ),
+                ),
+                nextScreen: Welcome(),
+              );
             }),
         theme: ThemeData.light(useMaterial3: true),
         darkTheme: ThemeData.dark().copyWith(
-          useMaterial3: true,
-          primaryColor: Colors.indigo,
-          hintColor: Colors.amber,
-          brightness: Brightness.dark,
-          canvasColor: Colors.purple,
-        ),
+            useMaterial3: true,
+            primaryColor: Colors.indigo,
+            hintColor: Colors.amber,
+            brightness: Brightness.dark,
+            canvasColor: Colors.purple,
+            // ignore: deprecated_member_use
+            textTheme: TextTheme(headline6: TextStyle(color: Colors.white))),
         themeMode: ThemeMode.system,
         debugShowCheckedModeBanner: false,
       ),
