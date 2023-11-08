@@ -42,8 +42,8 @@ class StripHelper {
     try {
       await Stripe.instance.presentPaymentSheet().then((value) async {
         bool value = await FirebaseFirestoreHelper.instance
-            .uploadOrderProductFirebase(
-                appProvider.getBuyProductList, context, "Paid");
+            .uploadOrderProductFirebase(appProvider.getBuyProductList, context,
+                "Paid", appProvider.getUserInformation.address!);
         appProvider.clearBuyProduct();
         if (value) {
           Future.delayed(Duration(seconds: 2), () {

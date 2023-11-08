@@ -38,44 +38,50 @@ class _AccountScreenState extends State<AccountScreen> {
           children: [
             Expanded(
                 flex: 2,
-                child: Container(
-                  alignment: Alignment.center,
-                  child: Column(
-                    children: [
-                      appProvider.getUserInformation.image == null
-                          ? Icon(
-                              Icons.person_outlined,
-                              size: 90,
-                            )
-                          : CircleAvatar(
-                              radius: 40,
-                              backgroundImage: NetworkImage(
-                                  appProvider.getUserInformation.image!)),
-                      SizedBox(
-                        height: kDefaultPadding,
-                      ),
-                      Text(appProvider.getUserInformation.name!,
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          )),
-                      Text(appProvider.getUserInformation.email!,
-                          style: TextStyle(
-                            fontSize: 16,
-                          )),
-                      Padding(
-                        padding: const EdgeInsets.only(top: kDefaultPadding),
-                        child: SizedBox(
-                          width: 150,
-                          child: PrimaryButton(
-                              onPressed: () {
-                                Routes.instance.push(
-                                    widget: EditProfile(), context: context);
-                              },
-                              title: "Edit Profile"),
+                child: Padding(
+                  padding: EdgeInsets.only(
+                      left: kDefaultPadding * 2,
+                      right: kDefaultPadding,
+                      top: kDefaultPadding * 2),
+                  child: Container(
+                    alignment: Alignment.center,
+                    child: Column(
+                      children: [
+                        appProvider.getUserInformation.image == null
+                            ? Icon(
+                                Icons.person_outlined,
+                                size: 90,
+                              )
+                            : CircleAvatar(
+                                radius: 40,
+                                backgroundImage: NetworkImage(
+                                    appProvider.getUserInformation.image!)),
+                        SizedBox(
+                          height: kDefaultPadding,
                         ),
-                      )
-                    ],
+                        Text(appProvider.getUserInformation.name!,
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            )),
+                        Text(appProvider.getUserInformation.email!,
+                            style: TextStyle(
+                              fontSize: 16,
+                            )),
+                        Padding(
+                          padding: const EdgeInsets.only(top: kDefaultPadding),
+                          child: SizedBox(
+                            width: 150,
+                            child: PrimaryButton(
+                                onPressed: () {
+                                  Routes.instance.push(
+                                      widget: EditProfile(), context: context);
+                                },
+                                title: "Edit Profile"),
+                          ),
+                        )
+                      ],
+                    ),
                   ),
                 )),
             Expanded(
@@ -83,7 +89,7 @@ class _AccountScreenState extends State<AccountScreen> {
                 child: Padding(
                   padding: const EdgeInsets.only(
                       left: kDefaultPadding * 2,
-                      bottom: kDefaultPadding * 3,
+                      bottom: kDefaultPadding * 5,
                       right: kDefaultPadding),
                   child: SingleChildScrollView(
                     child: Column(

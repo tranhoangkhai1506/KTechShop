@@ -259,7 +259,7 @@ class _HomeState extends State<Home> {
                                         crossAxisCount: 2,
                                         mainAxisSpacing: 20,
                                         crossAxisSpacing: 20,
-                                        childAspectRatio: 0.5),
+                                        childAspectRatio: 0.6),
                                 itemBuilder: (ctx, index) {
                                   ProductModel singleProduct =
                                       seacrhList[index];
@@ -354,7 +354,7 @@ class _HomeState extends State<Home> {
                                         crossAxisCount: 2,
                                         mainAxisSpacing: 20,
                                         crossAxisSpacing: 20,
-                                        childAspectRatio: 0.5),
+                                        childAspectRatio: 0.6),
                                 itemBuilder: (ctx, index) {
                                   ProductModel singleProduct =
                                       productModelList[index];

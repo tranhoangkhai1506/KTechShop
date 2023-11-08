@@ -111,7 +111,7 @@ class _EditProfileState extends State<EditProfile> {
                   disabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(kDefaultPadding),
                   ),
-                  hintText: appProvider.getUserInformation.address == "" ||
+                  hintText: appProvider.getUserInformation.address == "null" ||
                           appProvider.getUserInformation.address == null
                       ? _currentAddress
                       : appProvider.getUserInformation.address),
@@ -142,8 +142,9 @@ class _EditProfileState extends State<EditProfile> {
                       name: name.text.isEmpty
                           ? appProvider.getUserInformation.name
                           : name.text,
-                      address:
-                          address.text.isEmpty ? _currentAddress : address.text,
+                      address: address.text.isNotEmpty
+                          ? address.text
+                          : _currentAddress,
                       phone: phone.text.isEmpty
                           ? appProvider.getUserInformation.phone
                           : phone.text);

@@ -3,10 +3,11 @@ import 'package:ktechshop/constants/constants.dart';
 import 'package:ktechshop/constants/dismension_constants.dart';
 import 'package:ktechshop/constants/routes.dart';
 import 'package:ktechshop/provider/app_provider.dart';
-import 'package:ktechshop/screens/cart_item_checkout/cart_item_checkout.dart';
 import 'package:ktechshop/screens/cart_screen/widgets/single_cart_item.dart';
 import 'package:ktechshop/widgets/primary_button/primary_button.dart';
 import 'package:provider/provider.dart';
+
+import '../check_currentlocation_screen/checkCurrentLocationScreen.dart';
 
 class CartScreen extends StatefulWidget {
   const CartScreen({super.key});
@@ -52,11 +53,12 @@ class _CartScreenState extends State<CartScreen> {
                     if (appProvider.getBuyProductList.isEmpty) {
                       showMessage("Cart is empty");
                     } else {
-                      Routes.instance
-                          .push(widget: CartItemCheckOut(), context: context);
+                      Routes.instance.push(
+                          widget: CheckCurrentLocationScreen(),
+                          context: context);
                     }
                   },
-                  title: "Checkout"),
+                  title: "Continue"),
             ],
           ),
         ),

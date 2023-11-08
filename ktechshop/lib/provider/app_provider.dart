@@ -50,6 +50,17 @@ class AppProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  void updateAddressUserInforFirebase(
+      BuildContext context, UserModel userModel) async {
+    _userModel = userModel;
+    await FirebaseFirestore.instance
+        .collection("users")
+        .doc(_userModel!.id)
+        .set(_userModel!.toJson());
+    showMessage("Saved");
+    notifyListeners();
+  }
+
   void updateUserInforFirebase(
       BuildContext context, UserModel userModel, File? file) async {
     if (file == null) {

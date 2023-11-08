@@ -113,7 +113,8 @@ class _CheckOutState extends State<CheckOut> {
                           .uploadOrderProductFirebase(
                               appProvider.getBuyProductList,
                               context,
-                              "Cash on delivery");
+                              "Cash on delivery",
+                              appProvider.getUserInformation.address!);
 
                       appProvider.clearBuyProduct();
                       if (value) {

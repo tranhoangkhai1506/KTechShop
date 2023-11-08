@@ -136,40 +136,43 @@ class _ProductDetailsState extends State<ProductDetails> {
                 ),
                 Row(
                   children: [
-                    SizedBox(
-                      height: 40,
-                      width: 160,
-                      child: OutlinedButton.icon(
-                          style: OutlinedButton.styleFrom(
-                            side: BorderSide(
-                                width: 2.0,
-                                color: Theme.of(context).primaryColor),
-                          ),
-                          onPressed: () {
-                            ProductModel productModel =
-                                widget.singleProduct.copyWith(quantity: qty);
-                            appProvider.addCartProduct(productModel);
-                            showMessage("Added to Cart");
-                          },
-                          icon: Icon(
-                            Icons.shopping_cart,
-                            weight: 15,
-                            color: Theme.of(context).primaryColor,
-                          ),
-                          label: Text(
-                            'CART',
-                            style: TextStyle(
-                              fontSize: 15,
+                    Padding(
+                      padding: const EdgeInsets.only(left: kDefaultPadding),
+                      child: SizedBox(
+                        height: 50,
+                        width: 160,
+                        child: OutlinedButton.icon(
+                            style: OutlinedButton.styleFrom(
+                              side: BorderSide(
+                                  width: 2.0,
+                                  color: Theme.of(context).primaryColor),
+                            ),
+                            onPressed: () {
+                              ProductModel productModel =
+                                  widget.singleProduct.copyWith(quantity: qty);
+                              appProvider.addCartProduct(productModel);
+                              showMessage("Added to Cart");
+                            },
+                            icon: Icon(
+                              Icons.shopping_cart,
+                              weight: 15,
                               color: Theme.of(context).primaryColor,
                             ),
-                          )),
+                            label: Text(
+                              'CART',
+                              style: TextStyle(
+                                fontSize: 15,
+                                color: Theme.of(context).primaryColor,
+                              ),
+                            )),
+                      ),
                     ),
                     SizedBox(
-                      width: kDefaultPadding,
+                      width: kDefaultPadding * 2,
                     ),
                     SizedBox(
-                      height: 40,
-                      width: 155,
+                      height: 50,
+                      width: 160,
                       child: ElevatedButton.icon(
                           onPressed: () {
                             ProductModel productModel =
@@ -183,7 +186,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                             weight: 15,
                           ),
                           label: Text(
-                            'BUY',
+                            'BUY NOW',
                             style: TextStyle(
                               fontSize: 15,
                             ),

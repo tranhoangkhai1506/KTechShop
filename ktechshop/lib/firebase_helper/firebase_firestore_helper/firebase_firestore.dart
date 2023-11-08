@@ -68,8 +68,8 @@ class FirebaseFirestoreHelper {
     return UserModel.fromJson(querySnapshot.data()!);
   }
 
-  Future<bool> uploadOrderProductFirebase(
-      List<ProductModel> list, BuildContext context, String payment) async {
+  Future<bool> uploadOrderProductFirebase(List<ProductModel> list,
+      BuildContext context, String payment, String shippingAddress) async {
     try {
       showLoaderDialog(context);
       double totalPrice = 0.0;
@@ -87,11 +87,12 @@ class FirebaseFirestoreHelper {
       String uid = FirebaseAuth.instance.currentUser!.uid;
       admin.set({
         "products": list.map((e) => e.toJson()),
-        "status": "Pending",  
+        "status": "Pending",
         "totalPrice": totalPrice,
         "payment": payment,
         "userId": uid,
-        "orderid": admin.id
+        "orderid": admin.id,
+        "shippingAddress": shippingAddress
       });
 
       documentReference.set({
@@ -100,6 +101,7 @@ class FirebaseFirestoreHelper {
         "totalPrice": totalPrice,
         "payment": payment,
         "userId": uid,
+        "shippingAddress": shippingAddress,
         "orderid": documentReference.id //
       });
       Navigator.of(context, rootNavigator: true).pop();

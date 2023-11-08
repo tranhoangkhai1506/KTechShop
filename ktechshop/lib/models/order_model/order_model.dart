@@ -7,6 +7,7 @@ class OrderModel {
   List<ProductModel> products;
   double totalPrice;
   String userId;
+  String? shippingAddress;
 
   OrderModel({
     required this.orderid,
@@ -14,6 +15,7 @@ class OrderModel {
     required this.status,
     required this.products,
     required this.totalPrice,
+    this.shippingAddress,
     required this.userId,
   });
 
@@ -25,6 +27,7 @@ class OrderModel {
       payment: json["payment"],
       status: json["status"],
       totalPrice: json["totalPrice"],
+      shippingAddress: json["shippingAddress"],
       products: productMap.map((e) => ProductModel.fromJson(e)).toList(),
     );
   }
