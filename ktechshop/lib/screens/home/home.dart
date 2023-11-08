@@ -251,7 +251,7 @@ class _HomeState extends State<Home> {
                               padding: const EdgeInsets.all(kDefaultPadding),
                               child: GridView.builder(
                                 physics: ScrollPhysics(),
-                                padding: EdgeInsets.only(bottom: 60),
+                                padding: EdgeInsets.only(bottom: 20),
                                 shrinkWrap: true,
                                 itemCount: seacrhList.length,
                                 gridDelegate:
@@ -259,7 +259,7 @@ class _HomeState extends State<Home> {
                                         crossAxisCount: 2,
                                         mainAxisSpacing: 20,
                                         crossAxisSpacing: 20,
-                                        childAspectRatio: 0.6),
+                                        childAspectRatio: 0.5),
                                 itemBuilder: (ctx, index) {
                                   ProductModel singleProduct =
                                       seacrhList[index];
@@ -354,7 +354,7 @@ class _HomeState extends State<Home> {
                                         crossAxisCount: 2,
                                         mainAxisSpacing: 20,
                                         crossAxisSpacing: 20,
-                                        childAspectRatio: 0.6),
+                                        childAspectRatio: 0.5),
                                 itemBuilder: (ctx, index) {
                                   ProductModel singleProduct =
                                       productModelList[index];

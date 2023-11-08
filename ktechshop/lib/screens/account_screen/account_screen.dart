@@ -48,7 +48,7 @@ class _AccountScreenState extends State<AccountScreen> {
                               size: 90,
                             )
                           : CircleAvatar(
-                              radius: 60,
+                              radius: 40,
                               backgroundImage: NetworkImage(
                                   appProvider.getUserInformation.image!)),
                       SizedBox(
@@ -79,7 +79,7 @@ class _AccountScreenState extends State<AccountScreen> {
                   ),
                 )),
             Expanded(
-                flex: 4,
+                flex: 3,
                 child: Padding(
                   padding: const EdgeInsets.only(
                       left: kDefaultPadding * 2,

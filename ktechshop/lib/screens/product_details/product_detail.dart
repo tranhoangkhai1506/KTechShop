@@ -35,7 +35,10 @@ class _ProductDetailsState extends State<ProductDetails> {
           ],
         ),
         body: Padding(
-          padding: EdgeInsets.all(kDefaultPadding),
+          padding: EdgeInsets.only(
+              bottom: 5 * kDefaultPadding,
+              left: kDefaultPadding,
+              right: kDefaultIconSize),
           child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -134,8 +137,8 @@ class _ProductDetailsState extends State<ProductDetails> {
                 Row(
                   children: [
                     SizedBox(
-                      height: 50,
-                      width: 190,
+                      height: 40,
+                      width: 160,
                       child: OutlinedButton.icon(
                           style: OutlinedButton.styleFrom(
                             side: BorderSide(
@@ -150,13 +153,13 @@ class _ProductDetailsState extends State<ProductDetails> {
                           },
                           icon: Icon(
                             Icons.shopping_cart,
-                            weight: 20,
+                            weight: 15,
                             color: Theme.of(context).primaryColor,
                           ),
                           label: Text(
-                            'ADD TO CART',
+                            'CART',
                             style: TextStyle(
-                              fontSize: 18,
+                              fontSize: 15,
                               color: Theme.of(context).primaryColor,
                             ),
                           )),
@@ -165,8 +168,8 @@ class _ProductDetailsState extends State<ProductDetails> {
                       width: kDefaultPadding,
                     ),
                     SizedBox(
-                      height: 50,
-                      width: 180,
+                      height: 40,
+                      width: 155,
                       child: ElevatedButton.icon(
                           onPressed: () {
                             ProductModel productModel =
@@ -177,12 +180,12 @@ class _ProductDetailsState extends State<ProductDetails> {
                           },
                           icon: Icon(
                             Icons.payment,
-                            weight: 20,
+                            weight: 15,
                           ),
                           label: Text(
-                            'BUY NOW',
+                            'BUY',
                             style: TextStyle(
-                              fontSize: 18,
+                              fontSize: 15,
                             ),
                           )),
                     )
