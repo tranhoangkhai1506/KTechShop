@@ -7,6 +7,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:ktechshop/constants/constants.dart';
 import 'package:ktechshop/models/user_model/user_model.dart';
 import 'package:ktechshop/screens/auth_ui/welcome/welcome.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 
 class FirebaseAuthHelper {
   static FirebaseAuthHelper instance = FirebaseAuthHelper();
@@ -59,6 +60,55 @@ class FirebaseAuthHelper {
       // Xử lý lỗi
       // ignore: avoid_print
       print("Lỗi đăng nhập bằng Google: $e");
+      return false;
+    }
+  }
+
+  // FutureOr<UserCredential> signInWithFacebook() async {
+  //   final LoginResult? loginResult = await FacebookAuth.instance.login();
+  //   final OAuthCredential facebookAuthCredential =
+  //       FacebookAuthProvider.credential(loginResult.accessToken!.token);
+  //   return FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
+  // }
+
+  FutureOr<bool> signInWithFacebook() async {
+    final LoginResult loginResult = await FacebookAuth.instance.login();
+    final OAuthCredential facebookAuthCredential =
+        FacebookAuthProvider.credential(loginResult.accessToken!.token);
+    FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
+
+    try {
+      final UserCredential userCredential =
+          await _auth.signInWithCredential(facebookAuthCredential);
+      final userId = _auth.currentUser!.uid;
+      final userDoc =
+          await _firebaseFirestore.collection("users").doc(userId).get();
+      if (userDoc.exists) {
+        // Người dùng đã tồn tại
+        // ignore: avoid_print
+        print("Người dùng đã tồn tại.");
+      } else {
+        // Người dùng chưa tồn tại
+        UserModel userModel = UserModel(
+            id: _auth.currentUser!.uid,
+            name: _auth.currentUser!.displayName,
+            email: _auth.currentUser!.email,
+            phone: _auth.currentUser!.phoneNumber != "null"
+                ? "null"
+                : _auth.currentUser!.phoneNumber,
+            address: null,
+            image: _auth.currentUser!.photoURL);
+        _firebaseFirestore
+            .collection("users")
+            .doc(userModel.id)
+            .set(userModel.toJson());
+      }
+
+      return true;
+    } catch (e) {
+      // Xử lý lỗi
+      // ignore: avoid_print
+      print("Lỗi đăng nhập bằng Facebook: $e");
       return false;
     }
   }

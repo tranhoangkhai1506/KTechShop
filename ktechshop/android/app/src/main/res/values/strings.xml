@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">KTechShop</string>
+    <string name="facebook_app_id">1075348316808137</string>
+    <string name="fb_login_protocol_scheme">fb1075348316808137</string>
+    <string name="facebook_client_token">b14d12eb5dcc264c3248636b48c0e842</string>
+</resources>
