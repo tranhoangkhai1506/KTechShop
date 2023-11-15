@@ -2,7 +2,6 @@ import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
-import 'package:ktechshop/constants/theme.dart';
 import 'package:ktechshop/firebase_helper/firebase_auth_helper/firebase_auth_helper.dart';
 import 'package:ktechshop/firebase_helper/firebase_options/firebase_options.dart';
 import 'package:ktechshop/provider/app_provider.dart';

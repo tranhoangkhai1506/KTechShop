@@ -15,8 +15,8 @@ class ChangePassword extends StatefulWidget {
 class _ChangePasswordState extends State<ChangePassword> {
   @override
   Widget build(BuildContext context) {
-    bool isShowPassWord = true;
-    bool isShowConfirmPassWord = true;
+    bool isShowPassWord = false;
+    bool isShowConfirmPassWord = false;
     TextEditingController password = TextEditingController();
     TextEditingController confirmPassword = TextEditingController();
     return Scaffold(

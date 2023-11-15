@@ -3,8 +3,10 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:ktechshop/constants/constants.dart';
+import 'package:ktechshop/constants/routes.dart';
 import 'package:ktechshop/models/user_model/user_model.dart';
 import 'package:ktechshop/screens/auth_ui/welcome/welcome.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
@@ -173,13 +175,15 @@ class FirebaseAuthHelper {
     await _auth.signOut();
 
     await _googleSignIn.signOut();
-
+    await FacebookAuth.instance.logOut();
     // ignore: use_build_context_synchronously
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => Welcome(),
-        ));
+
+    // Navigator.push(
+    //   context,
+    //   MaterialPageRoute(builder: (context) => Welcome()),
+    // );
+    // ignore: use_build_context_synchronously
+    Routes.instance.push(widget: Welcome(), context: context);
   }
 
   Future<bool> changePassword(String password, BuildContext context) async {

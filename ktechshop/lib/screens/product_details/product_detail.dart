@@ -5,9 +5,10 @@ import 'package:ktechshop/constants/dismension_constants.dart';
 import 'package:ktechshop/constants/routes.dart';
 import 'package:ktechshop/models/products_model/product_models.dart';
 import 'package:ktechshop/provider/app_provider.dart';
-import 'package:ktechshop/screens/check_out/check_out.dart';
 import 'package:ktechshop/screens/cart_screen/cart_screen.dart';
 import 'package:provider/provider.dart';
+
+import '../buy_now_checkLocation_screen/buy_now_location.dart';
 
 class ProductDetails extends StatefulWidget {
   final ProductModel singleProduct;
@@ -178,7 +179,8 @@ class _ProductDetailsState extends State<ProductDetails> {
                             ProductModel productModel =
                                 widget.singleProduct.copyWith(quantity: qty);
                             Routes.instance.push(
-                                widget: CheckOut(singleProduct: productModel),
+                                widget: SingleCheckCurrentLocationScreen(
+                                    product: productModel),
                                 context: context);
                           },
                           icon: Icon(
