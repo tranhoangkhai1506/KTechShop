@@ -1,5 +1,6 @@
 // ignore_for_file: unnecessary_string_interpolations, unnecessary_brace_in_string_interps
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ktechshop/constants/dismension_constants.dart';
@@ -23,6 +24,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   List<CategoriesModel> categoriesList = [];
   List<ProductModel> productModelList = [];
+  List<String> suggestions = [];
   bool isLoading = false;
   String _currentAddress = "Loading...";
   @override
@@ -64,6 +66,16 @@ class _HomeState extends State<Home> {
             element.name.toLowerCase().contains(value.toLowerCase()))
         .toList();
     setState(() {});
+  }
+
+  void updateSearchSuggestions(String value) {
+    setState(() {
+      suggestions = productModelList
+          .where((element) =>
+              element.name.toLowerCase().contains(value.toLowerCase()))
+          .map((element) => element.name)
+          .toList();
+    });
   }
 
   ThemeData lightTheme = ThemeData.light().copyWith(
@@ -157,6 +169,13 @@ class _HomeState extends State<Home> {
                           controller: search,
                           onChanged: (String value) {
                             searchProducts(value);
+                            if (value.isNotEmpty) {
+                              updateSearchSuggestions(value);
+                            } else {
+                              setState(() {
+                                suggestions.clear();
+                              });
+                            }
                           },
                           decoration: InputDecoration(
                               enabledBorder: OutlineInputBorder(
@@ -177,6 +196,29 @@ class _HomeState extends State<Home> {
                                 color: Colors.grey,
                               )),
                         ),
+                        suggestions.isNotEmpty
+                            ? SizedBox(
+                                height: 200,
+                                child: Card(
+                                  elevation: 4.0,
+                                  child: ListView.builder(
+                                    itemCount: suggestions.length,
+                                    itemBuilder: (context, index) {
+                                      return ListTile(
+                                        title: Text(suggestions[index]),
+                                        onTap: () {
+                                          search.text = suggestions[index];
+                                          searchProducts(suggestions[index]);
+                                          setState(() {
+                                            suggestions.clear();
+                                          });
+                                        },
+                                      );
+                                    },
+                                  ),
+                                ),
+                              )
+                            : SizedBox.shrink(),
                       ],
                     ),
                   ),
@@ -436,7 +478,7 @@ class _HomeState extends State<Home> {
                                   );
                                 },
                               ),
-                            )
+                            ),
                 ],
               ),
             ),
