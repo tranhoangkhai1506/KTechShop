@@ -1,6 +1,3 @@
-// ignore_for_file: unnecessary_string_interpolations, unnecessary_brace_in_string_interps
-
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ktechshop/constants/dismension_constants.dart';
@@ -301,7 +298,7 @@ class _HomeState extends State<Home> {
                                         crossAxisCount: 2,
                                         mainAxisSpacing: 20,
                                         crossAxisSpacing: 20,
-                                        childAspectRatio: 0.6),
+                                        childAspectRatio: 0.5),
                                 itemBuilder: (ctx, index) {
                                   ProductModel singleProduct =
                                       seacrhList[index];
@@ -396,7 +393,7 @@ class _HomeState extends State<Home> {
                                         crossAxisCount: 2,
                                         mainAxisSpacing: 20,
                                         crossAxisSpacing: 20,
-                                        childAspectRatio: 0.6),
+                                        childAspectRatio: 0.5),
                                 itemBuilder: (ctx, index) {
                                   ProductModel singleProduct =
                                       productModelList[index];

@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -173,17 +175,12 @@ class FirebaseAuthHelper {
     final GoogleSignIn _googleSignIn = GoogleSignIn();
 
     await _auth.signOut();
-
     await _googleSignIn.signOut();
     await FacebookAuth.instance.logOut();
-    // ignore: use_build_context_synchronously
-
-    // Navigator.push(
-    //   context,
-    //   MaterialPageRoute(builder: (context) => Welcome()),
-    // );
-    // ignore: use_build_context_synchronously
-    Routes.instance.push(widget: Welcome(), context: context);
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => Welcome()),
+    );
   }
 
   Future<bool> changePassword(String password, BuildContext context) async {

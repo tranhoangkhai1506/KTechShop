@@ -109,7 +109,7 @@ class _OrderScreenState extends State<OrderScreen> {
                                   SizedBox(
                                     height: kDefaultPadding,
                                   ),
-                                  Text("Order status: ${orderModel.status}",
+                                  Text("Status: ${orderModel.status}",
                                       maxLines: 1,
                                       style: TextStyle(
                                         fontSize: 13,

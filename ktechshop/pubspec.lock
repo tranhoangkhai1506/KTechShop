@@ -592,6 +592,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.12.0+4"
+  hawk_fab_menu:
+    dependency: "direct main"
+    description:
+      name: hawk_fab_menu
+      sha256: "279a9374b0750a67e6a8556525e6669c06a57827af14866c2ab1fac5351a2fb2"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.2.0"
   html:
     dependency: transitive
     description:
