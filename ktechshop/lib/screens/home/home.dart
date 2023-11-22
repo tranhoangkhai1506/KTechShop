@@ -7,6 +7,7 @@ import 'package:ktechshop/models/categories_model/categories_model.dart';
 import 'package:ktechshop/models/products_model/product_models.dart';
 import 'package:ktechshop/provider/app_provider.dart';
 import 'package:ktechshop/screens/category_view/category_view.dart';
+import 'package:ktechshop/screens/chatbot_screen/chat_screen.dart';
 import 'package:ktechshop/screens/product_details/product_detail.dart';
 import 'package:ktechshop/widgets/top_titles/top_titles.dart';
 import 'package:provider/provider.dart';
@@ -120,9 +121,38 @@ class _HomeState extends State<Home> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        TopTitles(
-                          title: 'K - Tech',
-                          subTitle: '',
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              children: const [
+                                TopTitles(
+                                  title: 'KQH Shop',
+                                  subTitle: '',
+                                ),
+                              ],
+                            ),
+                            Center(
+                              child: Container(
+                                width: 45,
+                                height: 45,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(50),
+                                  color:
+                                      const Color.fromARGB(255, 141, 192, 234),
+                                ),
+                                child: IconButton(
+                                  color: Colors.black,
+                                  icon: Icon(Icons.support_agent_outlined),
+                                  onPressed: () {
+                                    Routes.instance.push(
+                                        widget: ChatScreen(),
+                                        context: context);
+                                  },
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                         Row(
                           children: [

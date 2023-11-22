@@ -39,7 +39,7 @@ class _MyAppState extends State<MyApp> {
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 return AnimatedSplashScreen(
-                  duration: 3000,
+                  duration: 1500,
                   splashTransition: SplashTransition.fadeTransition,
                   splash: Center(
                     child: Column(
