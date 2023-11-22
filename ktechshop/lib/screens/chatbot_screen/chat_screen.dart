@@ -2,8 +2,11 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:ktechshop/constants/routes.dart';
 import 'package:ktechshop/screens/chatbot_screen/chat_mesage_type.dart';
 import 'package:ktechshop/screens/chatbot_screen/chat_mesage_widget.dart';
+import 'package:ktechshop/screens/custom_bottom_bar/custom_bottom_bar.dart';
+import 'package:ktechshop/screens/home/home.dart';
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key});
@@ -13,7 +16,7 @@ class ChatScreen extends StatefulWidget {
 }
 
 Future<String> generateResponse(String prompt) async {
-  const apiKey = "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";
+  const apiKey = ""; // Tạo Key ở platform.openai rồi thêm vào.
   var url = Uri.https("api.openai.com", "/v1/completions");
   final response = await http.post(
     url,
@@ -70,10 +73,23 @@ class _ChatScreenState extends State<ChatScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("ChatBot"),
+        title: const Text(
+          "ChatBot Tư Vấn",
+          style: TextStyle(color: Colors.white),
+        ),
         elevation: 0,
         backgroundColor: const Color(0xFF444654),
         centerTitle: true,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          color: Colors.white,
+          onPressed: () async {
+            Routes.instance.push(
+              widget: CustomBottomBar(),
+              context: context,
+            );
+          },
+        ),
       ),
       backgroundColor: Colors.grey,
       body: SafeArea(

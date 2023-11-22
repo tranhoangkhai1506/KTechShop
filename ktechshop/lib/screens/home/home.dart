@@ -145,9 +145,16 @@ class _HomeState extends State<Home> {
                                   color: Colors.black,
                                   icon: Icon(Icons.support_agent_outlined),
                                   onPressed: () {
-                                    Routes.instance.push(
-                                        widget: ChatScreen(),
-                                        context: context);
+                                    setState(() {});
+                                    Navigator.of(context, rootNavigator: true)
+                                        .pushAndRemoveUntil(
+                                      MaterialPageRoute(
+                                        builder: (BuildContext context) {
+                                          return ChatScreen();
+                                        },
+                                      ),
+                                      (_) => false,
+                                    );
                                   },
                                 ),
                               ),
