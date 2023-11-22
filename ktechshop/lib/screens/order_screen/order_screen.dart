@@ -118,8 +118,7 @@ class _OrderScreenState extends State<OrderScreen> {
                                   SizedBox(
                                     height: kDefaultPadding,
                                   ),
-                                  orderModel.status == "Pending" ||
-                                          orderModel.status == "Delivery"
+                                  orderModel.status == "Pending"
                                       ? ElevatedButton(
                                           onPressed: () async {
                                             await FirebaseFirestoreHelper

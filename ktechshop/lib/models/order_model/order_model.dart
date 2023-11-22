@@ -7,6 +7,9 @@ class OrderModel {
   List<ProductModel> products;
   double totalPrice;
   String userId;
+  String? dateOrder;
+  String? dateCompletedOrder;
+  String? dateCancelOrder;
   String? shippingAddress;
 
   OrderModel({
@@ -15,7 +18,10 @@ class OrderModel {
     required this.status,
     required this.products,
     required this.totalPrice,
+    this.dateOrder,
+    this.dateCompletedOrder,
     this.shippingAddress,
+    this.dateCancelOrder,
     required this.userId,
   });
 
@@ -27,6 +33,9 @@ class OrderModel {
       payment: json["payment"],
       status: json["status"],
       totalPrice: json["totalPrice"],
+      dateOrder: json["dateOrder"],
+      dateCompletedOrder: json["dateOrder"],
+      dateCancelOrder: json["dateCancelOrder"],
       shippingAddress: json["shippingAddress"],
       products: productMap.map((e) => ProductModel.fromJson(e)).toList(),
     );

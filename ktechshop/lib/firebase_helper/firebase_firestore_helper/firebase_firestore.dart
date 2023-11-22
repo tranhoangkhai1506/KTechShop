@@ -72,6 +72,7 @@ class FirebaseFirestoreHelper {
       BuildContext context, String payment, String shippingAddress) async {
     try {
       showLoaderDialog(context);
+      String dateOrder = formatDate(DateTime.now()).toString();
       double totalPrice = 0.0;
       for (var element in list) {
         totalPrice += element.price * element.quantity!;
@@ -92,7 +93,8 @@ class FirebaseFirestoreHelper {
         "payment": payment,
         "userId": uid,
         "orderid": admin.id,
-        "shippingAddress": shippingAddress
+        "shippingAddress": shippingAddress,
+        "dateOrder": dateOrder
       });
 
       documentReference.set({
@@ -102,7 +104,8 @@ class FirebaseFirestoreHelper {
         "payment": payment,
         "userId": uid,
         "shippingAddress": shippingAddress,
-        "orderid": documentReference.id //
+        "orderid": documentReference.id,
+        "dateOrder": dateOrder
       });
       Navigator.of(context, rootNavigator: true).pop();
       showMessage("Ordered Successfully");
@@ -149,20 +152,60 @@ class FirebaseFirestoreHelper {
   }
 
   Future<void> updateOrder(OrderModel orderModel, String status) async {
-    await _firebaseFirestore
-        .collection("usersOrders")
-        .doc(FirebaseAuth.instance.currentUser!.uid)
-        .collection("orders")
-        .doc(orderModel.orderid)
-        .update({
-      "status": status,
-    });
+    String dateCompletedOrCancelOrder = formatDate(DateTime.now()).toString();
+    // Nguời dùng hủy đơn hàng
+    if (status.contains("Cancel")) {
+      await _firebaseFirestore
+          .collection("usersOrders")
+          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .collection("orders")
+          .doc(orderModel.orderid)
+          .update({
+        "status": status,
+        "dateCancelOrder": dateCompletedOrCancelOrder
+      });
 
-    await _firebaseFirestore
-        .collection("orders")
-        .doc(orderModel.orderid)
-        .update({
-      "status": status,
-    });
+      await _firebaseFirestore
+          .collection("orders")
+          .doc(orderModel.orderid)
+          .update({
+        "status": status,
+        "dateCancelOrder": dateCompletedOrCancelOrder
+      });
+    }
+    //Người dùng đã nhận hàng
+    if (status.contains("Completed")) {
+      await _firebaseFirestore
+          .collection("usersOrders")
+          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .collection("orders")
+          .doc(orderModel.orderid)
+          .update({
+        "status": status,
+        "dateCompletedOrder": dateCompletedOrCancelOrder
+      });
+
+      await _firebaseFirestore
+          .collection("orders")
+          .doc(orderModel.orderid)
+          .update({
+        "status": status,
+        "dateCompletedOrder": dateCompletedOrCancelOrder
+      });
+    }
+  }
+
+  String formatDate(DateTime date) {
+    // Format the date as 'yyyy-MM-dd'
+    String year = date.year.toString();
+    String month = _twoDigits(date.month);
+    String day = _twoDigits(date.day);
+
+    return '$year-$month-$day';
+  }
+
+  String _twoDigits(int n) {
+    // Add leading zero if the number is less than 10
+    return n < 10 ? '0$n' : '$n';
   }
 }
