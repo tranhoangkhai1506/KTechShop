@@ -5,6 +5,7 @@ import 'package:ktechshop/constants/routes.dart';
 import 'package:ktechshop/firebase_helper/firebase_auth_helper/firebase_auth_helper.dart';
 import 'package:ktechshop/provider/app_provider.dart';
 import 'package:ktechshop/screens/about_screen/about_screen.dart';
+import 'package:ktechshop/screens/auth_ui/welcome/welcome.dart';
 import 'package:ktechshop/screens/change_password/change_password.dart';
 import 'package:ktechshop/screens/edit_profile/edit.profile.dart';
 import 'package:ktechshop/screens/favourite_screen/favourite_screen.dart';
@@ -136,9 +137,18 @@ class _AccountScreenState extends State<AccountScreen> {
                           title: Text("Change Password"),
                         ),
                         ListTile(
-                          onTap: () async {
+                          onTap: () {
                             FirebaseAuthHelper.instance.signOut(context);
-                            FacebookAuth.instance.logOut();
+                            setState(() {});
+                            Navigator.of(context, rootNavigator: true)
+                                .pushAndRemoveUntil(
+                              MaterialPageRoute(
+                                builder: (BuildContext context) {
+                                  return Welcome();
+                                },
+                              ),
+                              (_) => false,
+                            );
                             // Routes.instance
                             //     .push(widget: Welcome(), context: context);
                           },
