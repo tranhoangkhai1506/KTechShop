@@ -6,7 +6,6 @@ import 'package:ktechshop/constants/routes.dart';
 import 'package:ktechshop/screens/chatbot_screen/chat_mesage_type.dart';
 import 'package:ktechshop/screens/chatbot_screen/chat_mesage_widget.dart';
 import 'package:ktechshop/screens/custom_bottom_bar/custom_bottom_bar.dart';
-import 'package:ktechshop/screens/home/home.dart';
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key});
@@ -16,7 +15,8 @@ class ChatScreen extends StatefulWidget {
 }
 
 Future<String> generateResponse(String prompt) async {
-  const apiKey = ""; // Tạo Key ở platform.openai rồi thêm vào.
+  const apiKey =
+      "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"; // Tạo Key ở platform.openai rồi thêm vào.
   var url = Uri.https("api.openai.com", "/v1/completions");
   final response = await http.post(
     url,

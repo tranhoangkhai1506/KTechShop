@@ -138,7 +138,7 @@ class _SignUpState extends State<SignUp> {
             ),
             PrimaryButton(
                 onPressed: () async {
-                  bool isVaildated = signUpVaildation(
+                  bool isVaildated = signUpValidation(
                       email.text, password.text, name.text, phone.text);
                   if (isVaildated) {
                     bool isLogined = await FirebaseAuthHelper.instance.signUp(

@@ -23,45 +23,47 @@ class FirebaseAuthHelper {
   FutureOr<bool> signInWithGoogle() async {
     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
 
-    final GoogleSignInAuthentication googleAuth =
-        await googleUser!.authentication;
-    final AuthCredential credential = GoogleAuthProvider.credential(
-      accessToken: googleAuth.accessToken,
-      idToken: googleAuth.idToken,
-    );
-
-    try {
-      final UserCredential userCredential =
-          await _auth.signInWithCredential(credential);
-      final userId = _auth.currentUser!.uid;
-      final userDoc =
-          await _firebaseFirestore.collection("users").doc(userId).get();
-      if (userDoc.exists) {
-        // Người dùng đã tồn tại
+    if (googleUser != null) {
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser.authentication;
+      final AuthCredential credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+      try {
+        final UserCredential userCredential =
+            await _auth.signInWithCredential(credential);
+        final userId = _auth.currentUser!.uid;
+        final userDoc =
+            await _firebaseFirestore.collection("users").doc(userId).get();
+        if (userDoc.exists) {
+          // Người dùng đã tồn tại
+          // ignore: avoid_print
+          print("Người dùng đã tồn tại.");
+        } else {
+          // Người dùng chưa tồn tại
+          UserModel userModel = UserModel(
+              id: _auth.currentUser!.uid,
+              name: _auth.currentUser!.displayName,
+              email: _auth.currentUser!.email,
+              phone: _auth.currentUser!.phoneNumber != "null"
+                  ? "null"
+                  : _auth.currentUser!.phoneNumber,
+              address: null,
+              image: _auth.currentUser!.photoURL);
+          _firebaseFirestore
+              .collection("users")
+              .doc(userModel.id)
+              .set(userModel.toJson());
+        }
+        return true;
+      } catch (e) {
+        // Xử lý lỗi
         // ignore: avoid_print
-        print("Người dùng đã tồn tại.");
-      } else {
-        // Người dùng chưa tồn tại
-        UserModel userModel = UserModel(
-            id: _auth.currentUser!.uid,
-            name: _auth.currentUser!.displayName,
-            email: _auth.currentUser!.email,
-            phone: _auth.currentUser!.phoneNumber != "null"
-                ? "null"
-                : _auth.currentUser!.phoneNumber,
-            address: null,
-            image: _auth.currentUser!.photoURL);
-        _firebaseFirestore
-            .collection("users")
-            .doc(userModel.id)
-            .set(userModel.toJson());
+        print("Lỗi đăng nhập bằng Google: $e");
+        return false;
       }
-
-      return true;
-    } catch (e) {
-      // Xử lý lỗi
-      // ignore: avoid_print
-      print("Lỗi đăng nhập bằng Google: $e");
+    } else {
       return false;
     }
   }
@@ -74,24 +76,28 @@ class FirebaseAuthHelper {
   // }
 
   FutureOr<bool> signInWithFacebook() async {
-    final LoginResult loginResult = await FacebookAuth.instance.login();
-    final OAuthCredential facebookAuthCredential =
-        FacebookAuthProvider.credential(loginResult.accessToken!.token);
-    FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
-
     try {
-      final UserCredential userCredential =
-          await _auth.signInWithCredential(facebookAuthCredential);
-      final userId = _auth.currentUser!.uid;
-      final userDoc =
-          await _firebaseFirestore.collection("users").doc(userId).get();
-      if (userDoc.exists) {
-        // Người dùng đã tồn tại
-        // ignore: avoid_print
-        print("Người dùng đã tồn tại.");
-      } else {
-        // Người dùng chưa tồn tại
-        UserModel userModel = UserModel(
+      final LoginResult loginResult = await FacebookAuth.instance.login();
+
+      if (loginResult.status == LoginStatus.success) {
+        final OAuthCredential facebookAuthCredential =
+            FacebookAuthProvider.credential(loginResult.accessToken!.token);
+        await FirebaseAuth.instance
+            .signInWithCredential(facebookAuthCredential);
+
+        final UserCredential userCredential =
+            await _auth.signInWithCredential(facebookAuthCredential);
+        final userId = _auth.currentUser!.uid;
+        final userDoc =
+            await _firebaseFirestore.collection("users").doc(userId).get();
+
+        if (userDoc.exists) {
+          // Người dùng đã tồn tại
+          // ignore: avoid_print
+          print("Người dùng đã tồn tại.");
+        } else {
+          // Người dùng chưa tồn tại
+          UserModel userModel = UserModel(
             id: _auth.currentUser!.uid,
             name: _auth.currentUser!.displayName,
             email: _auth.currentUser!.email,
@@ -99,14 +105,22 @@ class FirebaseAuthHelper {
                 ? "null"
                 : _auth.currentUser!.phoneNumber,
             address: null,
-            image: _auth.currentUser!.photoURL);
-        _firebaseFirestore
-            .collection("users")
-            .doc(userModel.id)
-            .set(userModel.toJson());
-      }
+            image: _auth.currentUser!.photoURL,
+          );
+          _firebaseFirestore
+              .collection("users")
+              .doc(userModel.id)
+              .set(userModel.toJson());
+        }
 
-      return true;
+        return true;
+      } else {
+        // Login with Facebook failed
+        // Handle the failure and return false
+        // ignore: avoid_print
+        print("Đăng nhập bằng Facebook thất bại.");
+        return false;
+      }
     } catch (e) {
       // Xử lý lỗi
       // ignore: avoid_print
@@ -197,37 +211,62 @@ class FirebaseAuthHelper {
   }
 }
 
-bool loginVaildation(String email, String password) {
+bool loginValidation(String email, String password) {
+  // Define a regular expression for a valid email format
+  final emailRegex =
+      RegExp(r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$");
+
   if (email.isEmpty && password.isEmpty) {
     showMessage('Both Fields are empty');
     return false;
   } else if (email.isEmpty) {
-    showMessage('email is empty');
+    showMessage('Email is empty');
+    return false;
+  } else if (!emailRegex.hasMatch(email)) {
+    showMessage('Invalid email format');
     return false;
   } else if (password.isEmpty) {
-    showMessage('password is empty');
+    showMessage('Password is empty');
     return false;
   } else {
     return true;
   }
 }
 
-bool signUpVaildation(
+bool signUpValidation(
     String email, String password, String name, String phone) {
+  final emailRegex =
+      RegExp(r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$");
+
+  final phoneRegex = RegExp(r"^(0|84)[1-9][0-9]{8}$");
+
+  final passwordRegex = RegExp(
+      r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()-_+=])[A-Za-z\d@$!%*#?&_-]+$');
+
   if (email.isEmpty && password.isEmpty && name.isEmpty && phone.isEmpty) {
-    showMessage('Both Fields are empty');
-    return false;
-  } else if (email.isEmpty) {
-    showMessage('email is empty');
-    return false;
-  } else if (password.isEmpty) {
-    showMessage('password is empty');
+    showMessage('All Fields are empty');
     return false;
   } else if (name.isEmpty) {
-    showMessage('name is empty');
+    showMessage('Name is empty');
+    return false;
+  } else if (email.isEmpty) {
+    showMessage('Email is empty');
+    return false;
+  } else if (!emailRegex.hasMatch(email)) {
+    showMessage('Invalid email format');
     return false;
   } else if (phone.isEmpty) {
-    showMessage('password is empty');
+    showMessage('Phone is empty');
+    return false;
+  } else if (!phoneRegex.hasMatch(phone)) {
+    showMessage('Invalid phone format (Vietnam)');
+    return false;
+  } else if (password.isEmpty) {
+    showMessage('Password is empty');
+    return false;
+  } else if (!passwordRegex.hasMatch(password)) {
+    showMessage(
+        'Password must contain at least one uppercase letter, one lowercase letter, one special character, and one digit.');
     return false;
   } else {
     return true;

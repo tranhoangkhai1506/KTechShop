@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:ktechshop/constants/constants.dart';
 import 'package:ktechshop/constants/dismension_constants.dart';
 import 'package:ktechshop/constants/routes.dart';
 import 'package:ktechshop/firebase_helper/firebase_auth_helper/firebase_auth_helper.dart';
@@ -90,7 +91,7 @@ class _LoginState extends State<Login> {
             ),
             PrimaryButton(
                 onPressed: () async {
-                  bool isVaildated = loginVaildation(email.text, password.text);
+                  bool isVaildated = loginValidation(email.text, password.text);
                   if (isVaildated) {
                     bool isLogined = await FirebaseAuthHelper.instance
                         .login(email.text, password.text, context);
@@ -100,7 +101,7 @@ class _LoginState extends State<Login> {
                           .push(widget: CustomBottomBar(), context: context);
                     } else {
                       // ignore: use_build_context_synchronously
-                      Routes.instance.push(widget: Welcome(), context: context);
+                      showMessage("Login failed");
                     }
                   }
                 },

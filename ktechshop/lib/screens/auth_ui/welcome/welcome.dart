@@ -8,6 +8,7 @@ import 'package:ktechshop/screens/auth_ui/sign_up/sign_up.dart';
 import 'package:ktechshop/widgets/primary_button/primary_button.dart';
 import 'package:ktechshop/widgets/top_titles/top_titles.dart';
 
+import '../../../constants/constants.dart';
 import '../../../firebase_helper/firebase_auth_helper/firebase_auth_helper.dart';
 import '../../custom_bottom_bar/custom_bottom_bar.dart';
 
@@ -39,6 +40,8 @@ class Welcome extends StatelessWidget {
                       // ignore: use_build_context_synchronously
                       Routes.instance
                           .push(widget: CustomBottomBar(), context: context);
+                    } else {
+                      showMessage("Login failed");
                     }
                   },
                   padding: EdgeInsets.zero,
@@ -59,6 +62,8 @@ class Welcome extends StatelessWidget {
                       // ignore: use_build_context_synchronously
                       Routes.instance
                           .push(widget: CustomBottomBar(), context: context);
+                    } else {
+                      showMessage("Login failed");
                     }
                   },
                   // padding: EdgeInsets.zero,

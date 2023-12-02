@@ -133,7 +133,7 @@ class _CheckOutState extends State<CheckOut> {
                           .makePayment(totalPrice, context);
                     }
                   },
-                  title: "Continues")
+                  title: "Continue")
             ],
           ),
         ));
