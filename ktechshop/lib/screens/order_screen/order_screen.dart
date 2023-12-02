@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:ktechshop/constants/dismension_constants.dart';
+import 'package:ktechshop/constants/routes.dart';
 import 'package:ktechshop/firebase_helper/firebase_firestore_helper/firebase_firestore.dart';
 import 'package:ktechshop/models/order_model/order_model.dart';
+import 'package:ktechshop/provider/app_provider.dart';
+import 'package:ktechshop/screens/rating_screen/rating_screen.dart';
+import 'package:provider/provider.dart';
 
 class OrderScreen extends StatefulWidget {
   const OrderScreen({super.key});
@@ -13,6 +17,7 @@ class OrderScreen extends StatefulWidget {
 class _OrderScreenState extends State<OrderScreen> {
   @override
   Widget build(BuildContext context) {
+    AppProvider appProvider = Provider.of<AppProvider>(context);
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -49,104 +54,236 @@ class _OrderScreenState extends State<OrderScreen> {
                         tilePadding: EdgeInsets.zero,
                         collapsedShape: RoundedRectangleBorder(
                             side: BorderSide(color: Colors.grey, width: 2)),
-                        title: Row(
-                          crossAxisAlignment: CrossAxisAlignment.baseline,
-                          textBaseline: TextBaseline.alphabetic,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Container(
-                                padding: EdgeInsets.all(kDefaultPadding / 2),
-                                decoration: BoxDecoration(
-                                  borderRadius:
-                                      BorderRadius.circular(kDefaultPadding),
-                                  color: Colors.grey.withOpacity(0.5),
-                                ),
-                                height: 100,
-                                width: 100,
-                                child:
-                                    Image.network(orderModel.products[0].image),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(kDefaultPadding),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                        title: orderModel.products.length > 1
+                            ? Row(
+                                crossAxisAlignment: CrossAxisAlignment.baseline,
+                                textBaseline: TextBaseline.alphabetic,
                                 children: [
-                                  Text(orderModel.products[0].name,
-                                      maxLines: 1,
-                                      style: TextStyle(
-                                          fontSize: 13,
-                                          overflow: TextOverflow.ellipsis,
-                                          fontWeight: FontWeight.bold)),
-                                  orderModel.products.length > 1
-                                      ? SizedBox.fromSize()
-                                      : Column(
-                                          children: [
-                                            SizedBox(
-                                              height: kDefaultPadding,
-                                            ),
-                                            Text(
-                                                "Quantity: ${orderModel.products[0].quantity.toString()}",
-                                                maxLines: 1,
-                                                style: TextStyle(
-                                                  fontSize: 13,
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                )),
-                                          ],
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Container(
+                                      padding:
+                                          EdgeInsets.all(kDefaultPadding / 2),
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(
+                                            kDefaultPadding),
+                                        color: Colors.grey.withOpacity(0.5),
+                                      ),
+                                      height: 100,
+                                      width: 100,
+                                      child: Image.network(
+                                          orderModel.products[0].image),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding:
+                                        const EdgeInsets.all(kDefaultPadding),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(orderModel.products[0].name,
+                                            maxLines: 1,
+                                            style: TextStyle(
+                                                fontSize: 13,
+                                                overflow: TextOverflow.ellipsis,
+                                                fontWeight: FontWeight.bold)),
+                                        orderModel.products.length > 1
+                                            ? SizedBox.fromSize()
+                                            : Column(
+                                                children: [
+                                                  SizedBox(
+                                                    height: kDefaultPadding,
+                                                  ),
+                                                  Text(
+                                                      "Quantity: ${orderModel.products[0].quantity.toString()}",
+                                                      maxLines: 1,
+                                                      style: TextStyle(
+                                                        fontSize: 13,
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                      )),
+                                                ],
+                                              ),
+                                        SizedBox(
+                                          height: kDefaultPadding,
                                         ),
-                                  SizedBox(
-                                    height: kDefaultPadding,
+                                        Text(
+                                            "Total price: \$${orderModel.totalPrice.toString()}",
+                                            maxLines: 1,
+                                            style: TextStyle(
+                                              fontSize: 13,
+                                              overflow: TextOverflow.ellipsis,
+                                            )),
+                                        SizedBox(
+                                          height: kDefaultPadding,
+                                        ),
+                                        Text("Status: ${orderModel.status}",
+                                            maxLines: 1,
+                                            style: TextStyle(
+                                              fontSize: 13,
+                                              overflow: TextOverflow.ellipsis,
+                                            )),
+                                        SizedBox(
+                                          height: kDefaultPadding,
+                                        ),
+                                        orderModel.status == "Pending"
+                                            ? ElevatedButton(
+                                                onPressed: () async {
+                                                  await FirebaseFirestoreHelper
+                                                      .instance
+                                                      .updateOrder(
+                                                          orderModel, "Cancel");
+                                                  orderModel.status = "Cancel";
+                                                  setState(() {});
+                                                },
+                                                child: Text("Cancel Order"))
+                                            : SizedBox.fromSize(),
+                                        orderModel.status == "Delivery"
+                                            ? ElevatedButton(
+                                                onPressed: () async {
+                                                  await FirebaseFirestoreHelper
+                                                      .instance
+                                                      .updateOrder(orderModel,
+                                                          "Completed");
+                                                  orderModel.status =
+                                                      "Completed";
+                                                  setState(() {});
+                                                },
+                                                child: Text("Delivered Order"))
+                                            : SizedBox.fromSize(),
+                                      ],
+                                    ),
                                   ),
-                                  Text(
-                                      "Total price: \$${orderModel.totalPrice.toString()}",
-                                      maxLines: 1,
-                                      style: TextStyle(
-                                        fontSize: 13,
-                                        overflow: TextOverflow.ellipsis,
-                                      )),
-                                  SizedBox(
-                                    height: kDefaultPadding,
+                                ],
+                              )
+                            : Row(
+                                crossAxisAlignment: CrossAxisAlignment.baseline,
+                                textBaseline: TextBaseline.alphabetic,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Container(
+                                      padding:
+                                          EdgeInsets.all(kDefaultPadding / 2),
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(
+                                            kDefaultPadding),
+                                        color: Colors.grey.withOpacity(0.5),
+                                      ),
+                                      height: 100,
+                                      width: 100,
+                                      child: Image.network(
+                                          orderModel.products[0].image),
+                                    ),
                                   ),
-                                  Text("Status: ${orderModel.status}",
-                                      maxLines: 1,
-                                      style: TextStyle(
-                                        fontSize: 13,
-                                        overflow: TextOverflow.ellipsis,
-                                      )),
-                                  SizedBox(
-                                    height: kDefaultPadding,
+                                  Padding(
+                                    padding:
+                                        const EdgeInsets.all(kDefaultPadding),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(orderModel.products[0].name,
+                                            maxLines: 1,
+                                            style: TextStyle(
+                                                fontSize: 13,
+                                                overflow: TextOverflow.ellipsis,
+                                                fontWeight: FontWeight.bold)),
+                                        orderModel.products.length > 1
+                                            ? SizedBox.fromSize()
+                                            : Column(
+                                                children: [
+                                                  SizedBox(
+                                                    height: kDefaultPadding,
+                                                  ),
+                                                  Text(
+                                                      "Quantity: ${orderModel.products[0].quantity.toString()}",
+                                                      maxLines: 1,
+                                                      style: TextStyle(
+                                                        fontSize: 13,
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                      )),
+                                                ],
+                                              ),
+                                        SizedBox(
+                                          height: kDefaultPadding,
+                                        ),
+                                        Text(
+                                            "Total price: \$${orderModel.totalPrice.toString()}",
+                                            maxLines: 1,
+                                            style: TextStyle(
+                                              fontSize: 13,
+                                              overflow: TextOverflow.ellipsis,
+                                            )),
+                                        SizedBox(
+                                          height: kDefaultPadding,
+                                        ),
+                                        Text("Status: ${orderModel.status}",
+                                            maxLines: 1,
+                                            style: TextStyle(
+                                              fontSize: 13,
+                                              overflow: TextOverflow.ellipsis,
+                                            )),
+                                        SizedBox(
+                                          height: kDefaultPadding,
+                                        ),
+                                        orderModel.status == "Pending"
+                                            ? ElevatedButton(
+                                                onPressed: () async {
+                                                  await FirebaseFirestoreHelper
+                                                      .instance
+                                                      .updateOrder(
+                                                          orderModel, "Cancel");
+                                                  orderModel.status = "Cancel";
+                                                  setState(() {});
+                                                },
+                                                child: Text("Cancel Order"))
+                                            : SizedBox.fromSize(),
+                                        orderModel.status == "Delivery"
+                                            ? ElevatedButton(
+                                                onPressed: () async {
+                                                  await FirebaseFirestoreHelper
+                                                      .instance
+                                                      .updateOrder(orderModel,
+                                                          "Completed");
+                                                  orderModel.status =
+                                                      "Completed";
+                                                  setState(() {});
+                                                },
+                                                child: Text("Delivered Order"))
+                                            : SizedBox.fromSize(),
+                                        orderModel.statusReview == "Review" &&
+                                                orderModel.status == "Completed"
+                                            ? ElevatedButton(
+                                                onPressed: () async {
+                                                  Routes.instance.push(
+                                                      widget: Rating(
+                                                        userId: appProvider
+                                                            .getUserInformation
+                                                            .id,
+                                                        productId: orderModel
+                                                            .products[0].id,
+                                                        orderId:
+                                                            orderModel.orderid,
+                                                      ),
+                                                      context: context);
+                                                  setState(() {});
+                                                  // await FirebaseFirestoreHelper
+                                                  //     .instance
+                                                  //     .updateOrderReview(
+                                                  //         orderModel, "Reviewed");
+                                                  // orderModel.status = "Reviewed";
+                                                  // setState(() {});
+                                                },
+                                                child: Text("Review"))
+                                            : SizedBox.fromSize(),
+                                      ],
+                                    ),
                                   ),
-                                  orderModel.status == "Pending"
-                                      ? ElevatedButton(
-                                          onPressed: () async {
-                                            await FirebaseFirestoreHelper
-                                                .instance
-                                                .updateOrder(
-                                                    orderModel, "Cancel");
-                                            orderModel.status = "Cancel";
-                                            setState(() {});
-                                          },
-                                          child: Text("Cancel Order"))
-                                      : SizedBox.fromSize(),
-                                  orderModel.status == "Delivery"
-                                      ? ElevatedButton(
-                                          onPressed: () async {
-                                            await FirebaseFirestoreHelper
-                                                .instance
-                                                .updateOrder(
-                                                    orderModel, "Completed");
-                                            orderModel.status = "Completed";
-                                            setState(() {});
-                                          },
-                                          child: Text("Delivered Order"))
-                                      : SizedBox.fromSize(),
                                 ],
                               ),
-                            ),
-                          ],
-                        ),
                         children: orderModel.products.length > 1
                             ? [
                                 Text("Details",
@@ -218,6 +355,28 @@ class _OrderScreenState extends State<OrderScreen> {
                                                     overflow:
                                                         TextOverflow.ellipsis,
                                                   )),
+                                              orderModel.statusReview ==
+                                                          "Review" &&
+                                                      orderModel.status ==
+                                                          "Completed"
+                                                  ? ElevatedButton(
+                                                      onPressed: () async {
+                                                        Routes.instance.push(
+                                                            widget: Rating(
+                                                                userId: appProvider
+                                                                    .getUserInformation
+                                                                    .id,
+                                                                productId:
+                                                                    singleProduct
+                                                                        .id,
+                                                                orderId:
+                                                                    orderModel
+                                                                        .orderid),
+                                                            context: context);
+                                                        setState(() {});
+                                                      },
+                                                      child: Text("Review"))
+                                                  : SizedBox.fromSize(),
                                             ],
                                           ),
                                         ),

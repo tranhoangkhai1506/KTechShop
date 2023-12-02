@@ -4,6 +4,7 @@ class OrderModel {
   String orderid;
   String payment;
   String status;
+  String? statusReview;
   List<ProductModel> products;
   double totalPrice;
   String userId;
@@ -16,6 +17,7 @@ class OrderModel {
     required this.orderid,
     required this.payment,
     required this.status,
+    this.statusReview,
     required this.products,
     required this.totalPrice,
     this.dateOrder,
@@ -32,6 +34,7 @@ class OrderModel {
       userId: json["userId"],
       payment: json["payment"],
       status: json["status"],
+      statusReview: json["statusReview"],
       totalPrice: json["totalPrice"],
       dateOrder: json["dateOrder"],
       dateCompletedOrder: json["dateOrder"],

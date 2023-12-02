@@ -7,6 +7,7 @@ import 'package:ktechshop/constants/constants.dart';
 import 'package:ktechshop/models/categories_model/categories_model.dart';
 import 'package:ktechshop/models/order_model/order_model.dart';
 import 'package:ktechshop/models/products_model/product_models.dart';
+import 'package:ktechshop/models/rating_model/rating_model.dart';
 import 'package:ktechshop/models/user_model/user_model.dart';
 
 class FirebaseFirestoreHelper {
@@ -94,6 +95,7 @@ class FirebaseFirestoreHelper {
         "userId": uid,
         "orderid": admin.id,
         "shippingAddress": shippingAddress,
+        "statusReview": "Review",
         "dateOrder": dateOrder
       });
 
@@ -104,6 +106,7 @@ class FirebaseFirestoreHelper {
         "payment": payment,
         "userId": uid,
         "shippingAddress": shippingAddress,
+        "statusReview": "Review",
         "orderid": documentReference.id,
         "dateOrder": dateOrder
       });
@@ -192,6 +195,86 @@ class FirebaseFirestoreHelper {
         "status": status,
         "dateCompletedOrder": dateCompletedOrCancelOrder
       });
+    }
+  }
+
+  Future<void> updateOrderReview(String orderId, String statusReview) async {
+    // Nguời dùng hủy đơn hàng
+    if (statusReview.contains("Review")) {
+      await _firebaseFirestore
+          .collection("usersOrders")
+          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .collection("orders")
+          .doc(orderId)
+          .update({
+        "statusReview": statusReview,
+      });
+
+      await _firebaseFirestore.collection("orders").doc(orderId).update({
+        "statusReview": statusReview,
+      });
+    }
+  }
+
+  Future<bool> isRatingOrder(String orderId) async {
+    QuerySnapshot<Map<String, dynamic>> querySnapshot_userRatingList =
+        await _firebaseFirestore
+            .collection("usersRatings")
+            .doc(FirebaseAuth.instance.currentUser!.uid)
+            .collection("ordersRatigs")
+            .doc(orderId)
+            .collection("ratings")
+            .get();
+    List<RatingModel> ratingList = querySnapshot_userRatingList.docs
+        .map((element) => RatingModel.fromJson(element.data()))
+        .toList();
+
+    QuerySnapshot<Map<String, dynamic>> querySnapshot = await _firebaseFirestore
+        .collection("usersOrders")
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .collection("orders")
+        .get();
+
+    List<OrderModel> orderList = querySnapshot.docs
+        .map((element) => OrderModel.fromJson(element.data()))
+        .toList();
+    late OrderModel orderModel;
+    if (orderList.isNotEmpty) {
+      orderModel =
+          orderList.firstWhere((element) => element.orderid == orderId);
+      if (orderModel.products.length == ratingList.length) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  Future<bool> uploadRatingFirebase(
+      String orderID, RatingModel rating, BuildContext context) async {
+    try {
+      showLoaderDialog(context);
+      DocumentReference documentReference = _firebaseFirestore
+          .collection("usersRatings")
+          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .collection("ordersRatigs")
+          .doc(orderID)
+          .collection("ratings")
+          .doc(rating.productId);
+
+      documentReference.set({
+        "productId": rating.productId,
+        "userId": rating.userId,
+        "rating": rating.rating,
+        "content": rating.content
+      });
+      Navigator.of(context, rootNavigator: true).pop();
+      showMessage("Rating Successfully");
+
+      return true;
+    } catch (e) {
+      showMessage(e.toString());
+      Navigator.of(context, rootNavigator: true).pop();
+      return false;
     }
   }
 
