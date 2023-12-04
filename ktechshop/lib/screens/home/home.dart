@@ -23,7 +23,6 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   List<CategoriesModel> categoriesList = [];
   List<ProductModel> productModelList = [];
-  List<ProductModel> productModelSuggestionList = [];
   List<ProductModel> productSuggestionByRatedScoreList = [];
   List<String> suggestions = [];
   bool isLoading = false;
@@ -228,7 +227,7 @@ class _HomeState extends State<Home> {
                                 borderRadius:
                                     BorderRadius.circular(kDefaultPadding),
                               ),
-                              hintText: 'Search...',
+                              hintText: 'Typing to search...',
                               prefixIcon: Icon(
                                 Icons.search,
                                 color: Colors.grey,
@@ -312,7 +311,7 @@ class _HomeState extends State<Home> {
                           padding: EdgeInsets.only(
                               top: kDefaultPadding, left: kDefaultPadding),
                           child: Text(
-                            'Best Products',
+                            'Best-selling Products',
                             style: TextStyle(
                                 fontSize: 18, fontWeight: FontWeight.bold),
                           ),
@@ -324,7 +323,7 @@ class _HomeState extends State<Home> {
                   search.text.isNotEmpty && seacrhList.isEmpty
                       ? Center(
                           child: Text(
-                          "No Product Found",
+                          "No Products Found",
                         ))
                       : seacrhList.isNotEmpty
                           ? Padding(

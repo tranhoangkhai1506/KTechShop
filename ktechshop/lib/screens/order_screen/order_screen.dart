@@ -88,10 +88,31 @@ class _OrderScreenState extends State<OrderScreen> {
                                                 fontSize: 13,
                                                 overflow: TextOverflow.ellipsis,
                                                 fontWeight: FontWeight.bold)),
+                                        SizedBox(
+                                          height: kDefaultPadding,
+                                        ),
+                                        Text(
+                                            "Date Order: ${orderModel.dateOrder}",
+                                            maxLines: 1,
+                                            style: TextStyle(
+                                              fontSize: 13,
+                                              overflow: TextOverflow.ellipsis,
+                                            )),
                                         orderModel.products.length > 1
                                             ? SizedBox.fromSize()
                                             : Column(
                                                 children: [
+                                                  SizedBox(
+                                                    height: kDefaultPadding,
+                                                  ),
+                                                  Text(
+                                                      "Date Order: ${orderModel.dateOrder}",
+                                                      maxLines: 1,
+                                                      style: TextStyle(
+                                                        fontSize: 13,
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                      )),
                                                   SizedBox(
                                                     height: kDefaultPadding,
                                                   ),
@@ -211,6 +232,16 @@ class _OrderScreenState extends State<OrderScreen> {
                                           height: kDefaultPadding,
                                         ),
                                         Text(
+                                            "Date Order: ${orderModel.dateOrder}",
+                                            maxLines: 1,
+                                            style: TextStyle(
+                                              fontSize: 13,
+                                              overflow: TextOverflow.ellipsis,
+                                            )),
+                                        SizedBox(
+                                          height: kDefaultPadding,
+                                        ),
+                                        Text(
                                             "Total price: \$${orderModel.totalPrice.toString()}",
                                             maxLines: 1,
                                             style: TextStyle(
@@ -270,12 +301,6 @@ class _OrderScreenState extends State<OrderScreen> {
                                                       ),
                                                       context: context);
                                                   setState(() {});
-                                                  // await FirebaseFirestoreHelper
-                                                  //     .instance
-                                                  //     .updateOrderReview(
-                                                  //         orderModel, "Reviewed");
-                                                  // orderModel.status = "Reviewed";
-                                                  // setState(() {});
                                                 },
                                                 child: Text("Review"))
                                             : SizedBox.fromSize(),
