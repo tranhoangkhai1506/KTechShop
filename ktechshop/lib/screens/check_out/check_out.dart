@@ -5,6 +5,7 @@ import 'package:ktechshop/firebase_helper/firebase_firestore_helper/firebase_fir
 import 'package:ktechshop/models/products_model/product_models.dart';
 import 'package:ktechshop/provider/app_provider.dart';
 import 'package:ktechshop/screens/custom_bottom_bar/custom_bottom_bar.dart';
+import 'package:ktechshop/send_email/send_email.dart';
 import 'package:ktechshop/stripe_helper/striper_helper.dart';
 import 'package:ktechshop/widgets/primary_button/primary_button.dart';
 import 'package:provider/provider.dart';
@@ -17,11 +18,28 @@ class CheckOut extends StatefulWidget {
   State<CheckOut> createState() => _CheckOutState();
 }
 
+String orderDetail(List<ProductModel> orderProducts) {
+  String orderDetails = "";
+  double totalPrice = 0;
+
+  for (ProductModel product in orderProducts) {
+    orderDetails += "Tên Sản Phẩm: ${product.name}.\n\n"
+        "Số lượng: ${product.quantity}.\n\n"
+        "Đơn giá: ${product.price}.\n";
+    totalPrice += (product.price * product.quantity!).round();
+  }
+
+  return "Thông tin đơn hàng:\n\n$orderDetails\n"
+      "Tổng Tiền:  $totalPrice dollar.\n\n ";
+}
+
 class _CheckOutState extends State<CheckOut> {
   int groupValue = 2;
   @override
   Widget build(BuildContext context) {
     AppProvider appProvider = Provider.of<AppProvider>(context);
+    List<ProductModel> productModel = appProvider.getBuyProductList;
+
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,
@@ -62,7 +80,7 @@ class _CheckOutState extends State<CheckOut> {
                     Text(
                       "Cash on Delivery",
                       style:
-                      TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
                   ],
                 ),
@@ -95,7 +113,7 @@ class _CheckOutState extends State<CheckOut> {
                     Text(
                       "Pay Online",
                       style:
-                      TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
                   ],
                 ),
@@ -111,24 +129,40 @@ class _CheckOutState extends State<CheckOut> {
                     if (groupValue == 1) {
                       bool value = await FirebaseFirestoreHelper.instance
                           .uploadOrderProductFirebase(
-                          appProvider.getBuyProductList,
-                          context,
-                          "Cash on delivery",
-                          appProvider.getUserInformation.address!);
-
-                      appProvider.clearBuyProduct();
+                              appProvider.getBuyProductList,
+                              context,
+                              "Cash on delivery",
+                              appProvider.getUserInformation.address!);
                       if (value) {
-                        Future.delayed(Duration(seconds: 2), () {
+                        await EmailSender.sendEmail(
+                          name: appProvider.getUserInformation.name,
+                          email: appProvider.getUserInformation.email,
+                          subject: "KQH SHOP",
+                          message: "${orderDetail(productModel)}"
+                              "Địa chỉ giao hàng: ${appProvider.getUserInformation.address}.\n\n"
+                              "Cảm ơn bạn đã mua hàng.",
+                        );
+                        Future.delayed(Duration(seconds: 1), () {
                           Routes.instance.push(
                               widget: CustomBottomBar(), context: context);
                         });
+                        appProvider.clearBuyProduct();
                       }
                     } else {
+                      await EmailSender.sendEmail(
+                          name: appProvider.getUserInformation.name,
+                          email: appProvider.getUserInformation.email,
+                          subject: "KQH SHOP",
+                          message: "${orderDetail(productModel)}"
+                              "Địa chỉ giao hàng: ${appProvider.getUserInformation.address}.\n\n"
+                              "Cảm ơn bạn đã mua hàng.",
+                        );
                       int value = double.parse(
-                          appProvider.totalPriceBuyProduct().toString())
+                              appProvider.totalPriceBuyProduct().toString())
                           .round()
                           .toInt();
                       String totalPrice = (value * 100).toString();
+                      // ignore: use_build_context_synchronously
                       await StripHelper.instence
                           .makePayment(totalPrice, context);
                     }

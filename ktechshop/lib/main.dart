@@ -60,7 +60,7 @@ class _MyAppState extends State<MyApp> {
                 );
               }
               return AnimatedSplashScreen(
-                duration: 3000,
+                duration: 2000,
                 splashTransition: SplashTransition.fadeTransition,
                 splash: Center(
                   child: Column(
