@@ -1,9 +1,13 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:ktechshop/constants/dismension_constants.dart';
 import 'package:ktechshop/constants/routes.dart';
 import 'package:ktechshop/firebase_helper/firebase_firestore_helper/firebase_firestore.dart';
+import 'package:ktechshop/models/order_model/order_model.dart';
+import 'package:ktechshop/models/products_model/product_models.dart';
 import 'package:ktechshop/provider/app_provider.dart';
 import 'package:ktechshop/screens/custom_bottom_bar/custom_bottom_bar.dart';
+import 'package:ktechshop/send_email/send_email.dart';
 import 'package:ktechshop/stripe_helper/striper_helper.dart';
 import 'package:ktechshop/widgets/primary_button/primary_button.dart';
 import 'package:provider/provider.dart';
@@ -15,11 +19,50 @@ class CartItemCheckOut extends StatefulWidget {
   State<CartItemCheckOut> createState() => _CartItemCheckOut();
 }
 
+Future<OrderModel?> getLatestOrder(String userId) async {
+  try {
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+        .collection('orders')
+        .where('userId', isEqualTo: userId)
+        .orderBy('dateOrder', descending: true)
+        .limit(1)
+        .get();
+
+    if (querySnapshot.docs.isNotEmpty) {
+      var latestOrderData =
+          querySnapshot.docs.first.data() as Map<String, dynamic>;
+      return OrderModel.fromJson(latestOrderData);
+    } else {
+      return null;
+    }
+  } catch (e) {
+    print("Error retrieving latest order: $e");
+    return null;
+  }
+}
+
+String orderDetail(List<ProductModel> orderProducts) {
+  String orderDetails = "";
+  double totalPrice = 0;
+
+  for (ProductModel product in orderProducts) {
+    orderDetails += "Tên Sản Phẩm: ${product.name}.\n\n"
+        "Số lượng: ${product.quantity}.\n\n"
+        "Đơn giá: ${product.price}.\n";
+    totalPrice += (product.price * product.quantity!).round();
+  }
+
+  return "Thông tin đơn hàng:\n\n$orderDetails\n"
+      "Tổng Tiền:  $totalPrice dollar.\n\n ";
+}
+
 class _CartItemCheckOut extends State<CartItemCheckOut> {
   int groupValue = 2;
+
   @override
   Widget build(BuildContext context) {
     AppProvider appProvider = Provider.of<AppProvider>(context);
+    List<ProductModel> productModel = appProvider.getBuyProductList;
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,
@@ -110,20 +153,36 @@ class _CartItemCheckOut extends State<CartItemCheckOut> {
                               context,
                               "Cash on delivery",
                               appProvider.getUserInformation.address!);
-
-                      appProvider.clearBuyProduct();
                       if (value) {
-                        Future.delayed(Duration(seconds: 2), () {
+                        await EmailSender.sendEmail(
+                          name: appProvider.getUserInformation.name,
+                          email: appProvider.getUserInformation.email,
+                          subject: "KQH SHOP",
+                          message: "${orderDetail(productModel)}"
+                              "Địa chỉ giao hàng: ${appProvider.getUserInformation.address}.\n\n"
+                              "Cảm ơn bạn đã mua hàng.",
+                        );
+                        Future.delayed(Duration(seconds: 1), () {
                           Routes.instance.push(
                               widget: CustomBottomBar(), context: context);
                         });
                       }
+                      appProvider.clearBuyProduct();
                     } else {
+                      await EmailSender.sendEmail(
+                          name: appProvider.getUserInformation.name,
+                          email: appProvider.getUserInformation.email,
+                          subject: "KQH SHOP",
+                          message: "${orderDetail(productModel)}"
+                              "Địa chỉ giao hàng: ${appProvider.getUserInformation.address}.\n\n"
+                              "Cảm ơn bạn đã mua hàng.",
+                        );
                       int value = double.parse(
                               appProvider.totalPriceBuyProduct().toString())
                           .round()
                           .toInt();
                       String totalPrice = (value * 100).toString();
+                      // ignore: use_build_context_synchronously
                       await StripHelper.instence
                           .makePayment(totalPrice, context);
                     }

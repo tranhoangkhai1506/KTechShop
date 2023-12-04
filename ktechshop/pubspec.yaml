@@ -55,6 +55,7 @@ dependencies:
   flutter_facebook_auth: ^6.0.2
   hawk_fab_menu: ^1.2.0
   flutter_rating_bar: ^4.0.1
+  shared_preferences: ^2.2.2
 
 dev_dependencies:
   flutter_test:

@@ -5,7 +5,6 @@ import 'package:ktechshop/constants/dismension_constants.dart';
 import 'package:ktechshop/constants/routes.dart';
 import 'package:ktechshop/firebase_helper/firebase_auth_helper/firebase_auth_helper.dart';
 import 'package:ktechshop/screens/auth_ui/sign_up/sign_up.dart';
-import 'package:ktechshop/screens/auth_ui/welcome/welcome.dart';
 import 'package:ktechshop/screens/custom_bottom_bar/custom_bottom_bar.dart';
 import 'package:ktechshop/widgets/primary_button/primary_button.dart';
 import 'package:ktechshop/widgets/top_titles/top_titles.dart';

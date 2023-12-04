@@ -62,7 +62,7 @@ class _CheckOutState extends State<CheckOut> {
                     Text(
                       "Cash on Delivery",
                       style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
                   ],
                 ),
@@ -95,7 +95,7 @@ class _CheckOutState extends State<CheckOut> {
                     Text(
                       "Pay Online",
                       style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
                   ],
                 ),
@@ -111,10 +111,10 @@ class _CheckOutState extends State<CheckOut> {
                     if (groupValue == 1) {
                       bool value = await FirebaseFirestoreHelper.instance
                           .uploadOrderProductFirebase(
-                              appProvider.getBuyProductList,
-                              context,
-                              "Cash on delivery",
-                              appProvider.getUserInformation.address!);
+                          appProvider.getBuyProductList,
+                          context,
+                          "Cash on delivery",
+                          appProvider.getUserInformation.address!);
 
                       appProvider.clearBuyProduct();
                       if (value) {
@@ -125,7 +125,7 @@ class _CheckOutState extends State<CheckOut> {
                       }
                     } else {
                       int value = double.parse(
-                              appProvider.totalPriceBuyProduct().toString())
+                          appProvider.totalPriceBuyProduct().toString())
                           .round()
                           .toInt();
                       String totalPrice = (value * 100).toString();

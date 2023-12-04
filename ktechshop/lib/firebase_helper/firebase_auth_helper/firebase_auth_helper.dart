@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:ktechshop/constants/constants.dart';
 import 'package:ktechshop/models/user_model/user_model.dart';
-import 'package:ktechshop/screens/auth_ui/welcome/welcome.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 
 class FirebaseAuthHelper {
