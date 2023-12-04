@@ -15,8 +15,7 @@ class ChatScreen extends StatefulWidget {
 }
 
 Future<String> generateResponse(String prompt) async {
-  const apiKey =
-      "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"; // Tạo Key ở platform.openai rồi thêm vào.
+  const apiKey = ""; // Tạo Key ở platform.openai rồi thêm vào.
   var url = Uri.https("api.openai.com", "/v1/completions");
   final response = await http.post(
     url,

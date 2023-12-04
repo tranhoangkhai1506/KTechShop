@@ -25,7 +25,7 @@ class Rating extends StatefulWidget {
 
 class _RatingState extends State<Rating> {
   TextEditingController content = TextEditingController();
-  String ratingScore = "";
+  String ratingScore = "3.0";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,7 +54,6 @@ class _RatingState extends State<Rating> {
                   color: Colors.amber,
                 ),
                 onRatingUpdate: (rating) {
-                  rating = 3;
                   ratingScore = rating.toString();
                 },
               ),

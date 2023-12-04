@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:ktechshop/constants/dismension_constants.dart';
 import 'package:ktechshop/constants/routes.dart';
 import 'package:ktechshop/firebase_helper/firebase_firestore_helper/firebase_firestore.dart';
@@ -22,6 +23,8 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   List<CategoriesModel> categoriesList = [];
   List<ProductModel> productModelList = [];
+  List<ProductModel> productModelSuggestionList = [];
+  List<ProductModel> productSuggestionByRatedScoreList = [];
   List<String> suggestions = [];
   bool isLoading = false;
   String _currentAddress = "Loading...";
@@ -41,7 +44,8 @@ class _HomeState extends State<Home> {
     FirebaseFirestoreHelper.instance.updateTokenFromFirebase();
     categoriesList = await FirebaseFirestoreHelper.instance.getCategory();
     productModelList = await FirebaseFirestoreHelper.instance.getBestProducts();
-
+    productSuggestionByRatedScoreList = await FirebaseFirestoreHelper.instance
+        .getProductSuggestionByRatedScore();
     productModelList.shuffle();
     setState(() {
       isLoading = false;
@@ -424,7 +428,8 @@ class _HomeState extends State<Home> {
                                 physics: ScrollPhysics(),
                                 padding: EdgeInsets.only(bottom: 60),
                                 shrinkWrap: true,
-                                itemCount: productModelList.length,
+                                itemCount:
+                                    productSuggestionByRatedScoreList.length,
                                 gridDelegate:
                                     SliverGridDelegateWithFixedCrossAxisCount(
                                         crossAxisCount: 2,
@@ -433,7 +438,8 @@ class _HomeState extends State<Home> {
                                         childAspectRatio: 0.5),
                                 itemBuilder: (ctx, index) {
                                   ProductModel singleProduct =
-                                      productModelList[index];
+                                      productSuggestionByRatedScoreList[index];
+
                                   return Container(
                                     decoration: BoxDecoration(
                                         color: Colors.grey.withOpacity(0.2),
@@ -476,6 +482,27 @@ class _HomeState extends State<Home> {
                                         Text(
                                           'Price: \$${singleProduct.price}',
                                           style: TextStyle(fontSize: 16),
+                                        ),
+                                        SizedBox(
+                                          height: kDefaultPadding / 3,
+                                        ),
+                                        Center(
+                                          child: RatingBar.builder(
+                                            initialRating:
+                                                singleProduct.averageRating!,
+                                            direction: Axis.horizontal,
+                                            allowHalfRating: true,
+                                            itemCount: 5,
+                                            itemSize: 20,
+                                            itemPadding: EdgeInsets.symmetric(
+                                                horizontal: 4.0),
+                                            itemBuilder: (context, _) => Icon(
+                                              Icons.star,
+                                              color: Colors.amber,
+                                            ),
+                                            onRatingUpdate: (rating) {},
+                                            ignoreGestures: true,
+                                          ),
                                         ),
                                         SizedBox(
                                           height: kMediumPadding,

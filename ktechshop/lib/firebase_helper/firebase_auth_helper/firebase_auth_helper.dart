@@ -30,6 +30,7 @@ class FirebaseAuthHelper {
         idToken: googleAuth.idToken,
       );
       try {
+        // ignore: unused_local_variable
         final UserCredential userCredential =
             await _auth.signInWithCredential(credential);
         final userId = _auth.currentUser!.uid;
@@ -84,6 +85,7 @@ class FirebaseAuthHelper {
         await FirebaseAuth.instance
             .signInWithCredential(facebookAuthCredential);
 
+        // ignore: unused_local_variable
         final UserCredential userCredential =
             await _auth.signInWithCredential(facebookAuthCredential);
         final userId = _auth.currentUser!.uid;
@@ -174,6 +176,7 @@ class FirebaseAuthHelper {
     }
   }
 
+  // ignore: unused_field
   final GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email']);
 
   void signOut(BuildContext context) async {

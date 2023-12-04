@@ -15,6 +15,7 @@ class ProductModel {
   String status;
 
   int? quantity;
+  double? averageRating;
 
   ProductModel({
     required this.image,
@@ -25,6 +26,7 @@ class ProductModel {
     required this.description,
     required this.status,
     this.quantity,
+    this.averageRating = 0.0,
   });
 
   factory ProductModel.fromJson(Map<String, dynamic> json) => ProductModel(
