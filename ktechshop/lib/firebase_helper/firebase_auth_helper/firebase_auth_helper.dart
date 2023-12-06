@@ -211,6 +211,18 @@ class FirebaseAuthHelper {
       return false;
     }
   }
+
+  Future<void> sendLinkPasswordReset(String email, BuildContext context) async {
+    try {
+      await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+      showMessage("Password reset link sent! Check your email!");
+      Navigator.of(context).pop();
+    } on FirebaseAuthException catch (e) {
+      // Navigator.of(context).pop();
+      // Navigator.of(context, rootNavigator: true).pop();
+      showMessage(e.code.toString());
+    }
+  }
 }
 
 bool loginValidation(String email, String password) {

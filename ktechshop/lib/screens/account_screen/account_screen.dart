@@ -113,6 +113,14 @@ class _AccountScreenState extends State<AccountScreen> {
                         ),
                         ListTile(
                           onTap: () {
+                            Routes.instance.push(
+                                widget: FavouriteScreen(), context: context);
+                          },
+                          leading: Icon(Icons.rate_review),
+                          title: Text("Your reviews"),
+                        ),
+                        ListTile(
+                          onTap: () {
                             Routes.instance
                                 .push(widget: AboutScreen(), context: context);
                           },

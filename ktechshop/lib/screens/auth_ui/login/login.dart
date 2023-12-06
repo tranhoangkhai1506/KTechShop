@@ -4,6 +4,7 @@ import 'package:ktechshop/constants/constants.dart';
 import 'package:ktechshop/constants/dismension_constants.dart';
 import 'package:ktechshop/constants/routes.dart';
 import 'package:ktechshop/firebase_helper/firebase_auth_helper/firebase_auth_helper.dart';
+import 'package:ktechshop/screens/auth_ui/forgot_pw/forgot_pw_screen.dart';
 import 'package:ktechshop/screens/auth_ui/sign_up/sign_up.dart';
 import 'package:ktechshop/screens/custom_bottom_bar/custom_bottom_bar.dart';
 import 'package:ktechshop/widgets/primary_button/primary_button.dart';
@@ -85,8 +86,22 @@ class _LoginState extends State<Login> {
                     ),
                   )),
             ),
-            SizedBox(
-              height: kDefaultPadding * 1.5,
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  CupertinoButton(
+                      onPressed: () {
+                        Routes.instance.push(
+                            widget: ForgotPasswordScreen(), context: context);
+                      },
+                      child: Text('Forgot password?',
+                          style: TextStyle(
+                              fontSize: 16,
+                              color: Theme.of(context).primaryColor))),
+                ],
+              ),
             ),
             PrimaryButton(
                 onPressed: () async {
