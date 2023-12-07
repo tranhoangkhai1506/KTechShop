@@ -15,8 +15,8 @@ class ChangePassword extends StatefulWidget {
 class _ChangePasswordState extends State<ChangePassword> {
   @override
   Widget build(BuildContext context) {
-    bool isShowPassWord = false;
-    bool isShowConfirmPassWord = false;
+    bool isShowPassWord = true;
+    //bool isShowConfirmPassWord = true;
     TextEditingController password = TextEditingController();
     TextEditingController confirmPassword = TextEditingController();
     return Scaffold(
@@ -68,7 +68,7 @@ class _ChangePasswordState extends State<ChangePassword> {
             ),
             TextFormField(
               controller: confirmPassword,
-              obscureText: isShowConfirmPassWord,
+              //obscureText: isShowConfirmPassWord,
               decoration: InputDecoration(
                   hintText: 'Confirm Password',
                   enabledBorder: OutlineInputBorder(
@@ -86,9 +86,9 @@ class _ChangePasswordState extends State<ChangePassword> {
                   ),
                   suffixIcon: CupertinoButton(
                     onPressed: () {
-                      setState(() {
-                        isShowConfirmPassWord = !isShowConfirmPassWord;
-                      });
+                      // setState(() {
+                      //   isShowConfirmPassWord = !isShowConfirmPassWord;
+                      // });
                     },
                     padding: EdgeInsets.zero,
                     child: Icon(

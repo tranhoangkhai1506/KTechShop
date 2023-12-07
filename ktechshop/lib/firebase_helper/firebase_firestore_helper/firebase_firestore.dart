@@ -142,6 +142,27 @@ class FirebaseFirestoreHelper {
     }
   }
 
+  Future<List<OrderModel>> getUserOrderCompleted() async {
+    try {
+      QuerySnapshot<Map<String, dynamic>> querySnapshot =
+          await _firebaseFirestore
+              .collection("usersOrders")
+              .doc(FirebaseAuth.instance.currentUser!.uid)
+              .collection("orders")
+              .get();
+
+      List<OrderModel> orderList = querySnapshot.docs
+          .map((element) => OrderModel.fromJson(element.data()))
+          .toList();
+      List<OrderModel> completedOrderList = orderList
+          .where((element) => element.status.contains("Completed"))
+          .toList();
+      return completedOrderList;
+    } catch (e) {
+      return [];
+    }
+  }
+
   void updateTokenFromFirebase() async {
     String? token = await FirebaseMessaging.instance.getToken();
     if (token != null) {
@@ -258,6 +279,11 @@ class FirebaseFirestoreHelper {
         .map((product) {
       double sumRating = productRatingsMap[product.id]?['sum'] ?? 0.0;
       double countRating = productRatingsMap[product.id]?['count'] ?? 1.0;
+      double averageRating = countRating > 0 ? sumRating / countRating : 0.0;
+
+      // Round the averageRating to the nearest half
+      double roundedRating = (averageRating * 2).round() / 2;
+      // print(product.id + " " + roundedRating.toString());
 
       return ProductModel(
         image: product.image,
@@ -268,12 +294,13 @@ class FirebaseFirestoreHelper {
         description: product.description,
         status: product.status,
         quantity: product.quantity,
-        averageRating: countRating > 0 ? sumRating / countRating : 0.0,
+        averageRating: roundedRating,
       );
     }).toList();
 
+    // Điều kiện muốn lấy sản phẩm có ? sao trung bình
     return productsWithAverageRating
-        .where((element) => element.averageRating != 0.0)
+        .where((element) => element.averageRating! > 3)
         .toList();
   }
 

@@ -9,6 +9,7 @@ import 'package:ktechshop/screens/change_password/change_password.dart';
 import 'package:ktechshop/screens/edit_profile/edit.profile.dart';
 import 'package:ktechshop/screens/favourite_screen/favourite_screen.dart';
 import 'package:ktechshop/screens/order_screen/order_screen.dart';
+import 'package:ktechshop/screens/rating_history_screen/review_history.dart';
 import 'package:ktechshop/screens/support_screen/support_screen.dart';
 import 'package:ktechshop/widgets/primary_button/primary_button.dart';
 import 'package:provider/provider.dart';
@@ -114,10 +115,11 @@ class _AccountScreenState extends State<AccountScreen> {
                         ListTile(
                           onTap: () {
                             Routes.instance.push(
-                                widget: FavouriteScreen(), context: context);
+                                widget: ReviewedHistoryScreen(),
+                                context: context);
                           },
                           leading: Icon(Icons.rate_review),
-                          title: Text("Your reviews"),
+                          title: Text("Your Reviews"),
                         ),
                         ListTile(
                           onTap: () {

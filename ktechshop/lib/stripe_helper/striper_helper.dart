@@ -32,7 +32,6 @@ class StripHelper {
       // ignore: use_build_context_synchronously
       displayPaymentSheet(context);
     } catch (e) {
-      // ignore:
       print(e);
     }
   }
