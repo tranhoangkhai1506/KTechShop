@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -24,6 +25,7 @@ class _HomeState extends State<Home> {
   List<CategoriesModel> categoriesList = [];
   List<ProductModel> productModelList = [];
   List<ProductModel> productSuggestionByRatedScoreList = [];
+  List<ProductModel> productSuggestionByCollaborativeFiltering = [];
   List<String> suggestions = [];
   bool isLoading = false;
   String _currentAddress = "Loading...";
@@ -44,7 +46,10 @@ class _HomeState extends State<Home> {
     categoriesList = await FirebaseFirestoreHelper.instance.getCategory();
     productModelList = await FirebaseFirestoreHelper.instance.getBestProducts();
     productSuggestionByRatedScoreList = await FirebaseFirestoreHelper.instance
-        .getProductSuggestionByRatedScore();
+        .getUserRatings(FirebaseAuth.instance.currentUser!.uid);
+    productSuggestionByCollaborativeFiltering = await FirebaseFirestoreHelper
+        .instance
+        .suggestProductsForUser(FirebaseAuth.instance.currentUser!.uid);
     productModelList.shuffle();
     setState(() {
       isLoading = false;
@@ -428,7 +433,8 @@ class _HomeState extends State<Home> {
                                 padding: EdgeInsets.only(bottom: 60),
                                 shrinkWrap: true,
                                 itemCount:
-                                    productSuggestionByRatedScoreList.length,
+                                    productSuggestionByCollaborativeFiltering
+                                        .length, ///////////////////////////////
                                 gridDelegate:
                                     SliverGridDelegateWithFixedCrossAxisCount(
                                         crossAxisCount: 2,
@@ -437,7 +443,8 @@ class _HomeState extends State<Home> {
                                         childAspectRatio: 0.5),
                                 itemBuilder: (ctx, index) {
                                   ProductModel singleProduct =
-                                      productSuggestionByRatedScoreList[index];
+                                      productSuggestionByCollaborativeFiltering[
+                                          index];
 
                                   return Container(
                                     decoration: BoxDecoration(
