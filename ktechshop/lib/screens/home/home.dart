@@ -324,6 +324,9 @@ class _HomeState extends State<Home> {
                           TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
                   ),
+                  SizedBox(
+                    height: kMediumPadding,
+                  ),
                   productSuggestionByCollaborativeFiltering.isEmpty
                       ? Center(
                           child: Text(
