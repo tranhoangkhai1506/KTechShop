@@ -45,8 +45,9 @@ class _HomeState extends State<Home> {
     FirebaseFirestoreHelper.instance.updateTokenFromFirebase();
     categoriesList = await FirebaseFirestoreHelper.instance.getCategory();
     productModelList = await FirebaseFirestoreHelper.instance.getBestProducts();
+    //
     productSuggestionByRatedScoreList = await FirebaseFirestoreHelper.instance
-        .getUserRatings(FirebaseAuth.instance.currentUser!.uid);
+        .getProductSuggestionByRatedScore();
     productSuggestionByCollaborativeFiltering = await FirebaseFirestoreHelper
         .instance
         .suggestProductsForUser(FirebaseAuth.instance.currentUser!.uid);
@@ -265,7 +266,10 @@ class _HomeState extends State<Home> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(kDefaultPadding),
+                    padding: const EdgeInsets.only(
+                        top: kDefaultPadding,
+                        left: kDefaultPadding,
+                        right: kDefaultPadding),
                     child: Text(
                       'Categories',
                       style:
@@ -311,19 +315,152 @@ class _HomeState extends State<Home> {
                                       ))
                                   .toList()),
                         ),
-                  !isSearched()
-                      ? Padding(
-                          padding: EdgeInsets.only(
-                              top: kDefaultPadding, left: kDefaultPadding),
+                  Padding(
+                    padding: EdgeInsets.only(
+                        top: kDefaultPadding, left: kDefaultPadding),
+                    child: Text(
+                      'Recommend',
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  productSuggestionByCollaborativeFiltering.isEmpty
+                      ? Center(
                           child: Text(
-                            'Best-selling Products',
-                            style: TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.bold),
+                          "No Products Found",
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
                           ),
-                        )
-                      : SizedBox.fromSize(),
-                  SizedBox(
-                    height: kDefaultPadding,
+                        ))
+                      : Padding(
+                          padding: const EdgeInsets.only(
+                              bottom: kDefaultPadding,
+                              left: kDefaultPadding,
+                              right: kDefaultPadding),
+                          child: GridView.builder(
+                            physics: ScrollPhysics(),
+                            padding: EdgeInsets.only(bottom: 60),
+                            shrinkWrap: true,
+                            itemCount: productSuggestionByCollaborativeFiltering
+                                .length, ///////////////////////////////
+                            gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 2,
+                                    mainAxisSpacing: 20,
+                                    crossAxisSpacing: 20,
+                                    childAspectRatio: 0.5),
+                            itemBuilder: (ctx, index) {
+                              ProductModel singleProduct =
+                                  productSuggestionByCollaborativeFiltering[
+                                      index];
+
+                              return Container(
+                                decoration: BoxDecoration(
+                                    color: Colors.grey.withOpacity(0.2),
+                                    borderRadius:
+                                        BorderRadius.circular(kDefaultPadding)),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    SizedBox(
+                                      height: kDefaultPadding * 2,
+                                    ),
+                                    SizedBox(
+                                      height: 100,
+                                      width: 120,
+                                      child: Image.network(
+                                        singleProduct.image,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: kMediumPadding,
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: kDefaultPadding,
+                                          right: kDefaultPadding),
+                                      child: Text(
+                                        singleProduct.name,
+                                        maxLines: 1,
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                          overflow: TextOverflow.ellipsis,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: kDefaultPadding / 2,
+                                    ),
+                                    Text(
+                                      'Price: \$${singleProduct.price}',
+                                      style: TextStyle(fontSize: 16),
+                                    ),
+                                    SizedBox(
+                                      height: kDefaultPadding / 3,
+                                    ),
+                                    Center(
+                                      child: RatingBar.builder(
+                                        initialRating:
+                                            singleProduct.averageRating!,
+                                        direction: Axis.horizontal,
+                                        allowHalfRating: true,
+                                        itemCount: 5,
+                                        itemSize: 20,
+                                        itemPadding: EdgeInsets.symmetric(
+                                            horizontal: 4.0),
+                                        itemBuilder: (context, _) => Icon(
+                                          Icons.star,
+                                          color: Colors.amber,
+                                        ),
+                                        onRatingUpdate: (rating) {},
+                                        ignoreGestures: true,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: kMediumPadding,
+                                    ),
+                                    SizedBox(
+                                        height: 40,
+                                        width: 100,
+                                        child: OutlinedButton(
+                                            onPressed: () {
+                                              Routes.instance.push(
+                                                  widget: ProductDetails(
+                                                      singleProduct:
+                                                          singleProduct),
+                                                  context: context);
+                                            },
+                                            style: OutlinedButton.styleFrom(
+                                              backgroundColor:
+                                                  Colors.grey.withOpacity(0.6),
+                                              foregroundColor: Colors.grey,
+                                              side: BorderSide(
+                                                  color: Colors.black,
+                                                  width: 1.5),
+                                            ),
+                                            child: Text(
+                                              'Buy',
+                                              style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.bold),
+                                            )))
+                                  ],
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                  Padding(
+                    padding: EdgeInsets.only(
+                        top: kDefaultPadding, left: kDefaultPadding),
+                    child: Text(
+                      'Best-selling Products',
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    ),
                   ),
                   search.text.isNotEmpty && seacrhList.isEmpty
                       ? Center(
@@ -432,9 +569,8 @@ class _HomeState extends State<Home> {
                                 physics: ScrollPhysics(),
                                 padding: EdgeInsets.only(bottom: 60),
                                 shrinkWrap: true,
-                                itemCount:
-                                    productSuggestionByCollaborativeFiltering
-                                        .length, ///////////////////////////////
+                                itemCount: productSuggestionByRatedScoreList
+                                    .length, ///////////////////////////////
                                 gridDelegate:
                                     SliverGridDelegateWithFixedCrossAxisCount(
                                         crossAxisCount: 2,
@@ -443,8 +579,7 @@ class _HomeState extends State<Home> {
                                         childAspectRatio: 0.5),
                                 itemBuilder: (ctx, index) {
                                   ProductModel singleProduct =
-                                      productSuggestionByCollaborativeFiltering[
-                                          index];
+                                      productSuggestionByRatedScoreList[index];
 
                                   return Container(
                                     decoration: BoxDecoration(
