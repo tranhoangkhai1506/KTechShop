@@ -680,7 +680,6 @@ class FirebaseFirestoreHelper {
   Future<List<ProductModel>> suggestProductsForUser(String userID) async {
     List<ProductModel> allProducts =
         await getBestProducts(); // Fetch all products
-    List<UserModel> allUsers = await getAllUsers(); // Fetch all users
     List<List<double>> utilityMatrix =
         await utilityMatrixY(); // Get the utility matrix
     List<List<double>> normalizedMatrix =
@@ -707,10 +706,10 @@ class FirebaseFirestoreHelper {
     for (int i = 0; i < predictedRatings.length; i++) {
       // Include only products with positive predicted ratings
       if (predictedRatings[i] >= 0) {
-      ProductModel product = allProducts[i];
-      //product.averageRating = predictedRatings[i]; // Set the predicted rating
-      suggestedProducts.add(product);
-      print("${product.name} ID: ${i} Diem: ${predictedRatings[i]}");
+        ProductModel product = allProducts[i];
+        //product.averageRating = predictedRatings[i]; // Set the predicted rating
+        suggestedProducts.add(product);
+        print("${product.name} ID: ${i} Diem: ${predictedRatings[i]}");
       }
     }
 

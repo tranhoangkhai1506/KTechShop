@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
@@ -175,5 +176,10 @@ class AppProvider with ChangeNotifier {
     }
     notifyListeners();
     return _currentAddress;
+  }
+
+  Future<List<ProductModel>> getProductUUCFList() async {
+    return await FirebaseFirestoreHelper.instance
+        .suggestProductsForUser(FirebaseAuth.instance.currentUser!.uid);
   }
 }
