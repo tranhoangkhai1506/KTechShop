@@ -497,27 +497,51 @@ class FirebaseFirestoreHelper {
     return productsWithAverageRating;
   }
 
+  // Future<List<List<double>>> utilityMatrixY() async {
+  //   List<ProductModel> productList = await getBestProducts();
+  //   List<UserModel> userList = await getAllUsers();
+  //   int soCot = userList.length;
+  //   int soDong = productList.length;
+
+  //   List<List<double>> matrix =
+  //       List.generate(soDong, (index) => List.generate(soCot, (index) => 0.0));
+
+  //   //Khởi tạo utilityMatrix với userCot itemDong tương ứng với giá tri rate từng sản phẩm
+  //   for (var i = 0; i < soDong; i++) {
+  //     String productId = productList[i].id;
+  //     for (var j = 0; j < soCot; j++) {
+  //       List<ProductModel> listRating = await getUserRatings(userList[j].id);
+  //       // Lọc ra các đánh giá có productId
+  //       ProductModel filteredRatings =
+  //           listRating.where((element) => element.id.contains(productId)).first;
+  //       // Gán giá trị trung bình của trường averageRating (nếu có) hoặc 0 (nếu không có) vào matrix[i][j]
+  //       matrix[i][j] = filteredRatings.averageRating!;
+  //     }
+  //   }
+
+  //   return matrix;
+  // }
   Future<List<List<double>>> utilityMatrixY() async {
     List<ProductModel> productList = await getBestProducts();
     List<UserModel> userList = await getAllUsers();
     int soCot = userList.length;
     int soDong = productList.length;
 
-    List<List<double>> matrix =
-        List.generate(soDong, (index) => List.generate(soCot, (index) => 0.0));
-
-    //Khởi tạo utilityMatrix với userCot itemDong tương ứng với giá tri rate từng sản phẩm
-    for (var i = 0; i < soDong; i++) {
-      String productId = productList[i].id;
-      for (var j = 0; j < soCot; j++) {
-        List<ProductModel> listRating = await getUserRatings(userList[j].id);
-        // Lọc ra các đánh giá có productId
-        ProductModel filteredRatings =
-            listRating.where((element) => element.id.contains(productId)).first;
-        // Gán giá trị trung bình của trường averageRating (nếu có) hoặc 0 (nếu không có) vào matrix[i][j]
-        matrix[i][j] = filteredRatings.averageRating!;
-      }
+    // Tạo map lưu trữ đánh giá của từng người dùng cho từng sản phẩm
+    Map<String, Map<String, double>> userRatingsMap = {};
+    for (var user in userList) {
+      List<ProductModel> listRating = await getUserRatings(user.id);
+      Map<String, double> productRatings = {
+        for (var rating in listRating) rating.id: rating.averageRating!
+      };
+      userRatingsMap[user.id] = productRatings;
     }
+
+    // Tạo ma trận tiện ích
+    List<List<double>> matrix = List.generate(
+        soDong,
+        (i) => List.generate(soCot,
+            (j) => userRatingsMap[userList[j].id]?[productList[i].id] ?? 0.0));
 
     return matrix;
   }
@@ -527,7 +551,7 @@ class FirebaseFirestoreHelper {
     int count = 0;
     for (var i = 0; i < utilityMatrix.length; i++) {
       double rating = utilityMatrix[i][columnIndex];
-      // Include a condition to check if rating is a valid number if necessary
+      // Include a condition to check if rating is a valid number if necessary 
       if (rating != 0.0) {
         sumScore += rating;
         count++;
