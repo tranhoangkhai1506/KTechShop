@@ -478,9 +478,7 @@ class FirebaseFirestoreHelper {
       double sumRating = productRatingsMap[product.id]?['sum'] ?? 0.0;
       double countRating = productRatingsMap[product.id]?['count'] ?? 1.0;
       double averageRating = countRating > 0 ? sumRating / countRating : -1.0;
-      // Round the averageRating to the nearest half
-      //double roundedRating = (averageRating * 2).round() / 2;
-      // print(product.id + " " + roundedRating.toString());
+
       return ProductModel(
         image: product.image,
         name: product.name,
@@ -497,30 +495,6 @@ class FirebaseFirestoreHelper {
     return productsWithAverageRating;
   }
 
-  // Future<List<List<double>>> utilityMatrixY() async {
-  //   List<ProductModel> productList = await getBestProducts();
-  //   List<UserModel> userList = await getAllUsers();
-  //   int soCot = userList.length;
-  //   int soDong = productList.length;
-
-  //   List<List<double>> matrix =
-  //       List.generate(soDong, (index) => List.generate(soCot, (index) => 0.0));
-
-  //   //Khởi tạo utilityMatrix với userCot itemDong tương ứng với giá tri rate từng sản phẩm
-  //   for (var i = 0; i < soDong; i++) {
-  //     String productId = productList[i].id;
-  //     for (var j = 0; j < soCot; j++) {
-  //       List<ProductModel> listRating = await getUserRatings(userList[j].id);
-  //       // Lọc ra các đánh giá có productId
-  //       ProductModel filteredRatings =
-  //           listRating.where((element) => element.id.contains(productId)).first;
-  //       // Gán giá trị trung bình của trường averageRating (nếu có) hoặc 0 (nếu không có) vào matrix[i][j]
-  //       matrix[i][j] = filteredRatings.averageRating!;
-  //     }
-  //   }
-
-  //   return matrix;
-  // }
   Future<List<List<double>>> utilityMatrixY() async {
     List<ProductModel> productList = await getBestProducts();
     List<UserModel> userList = await getAllUsers();
@@ -551,7 +525,7 @@ class FirebaseFirestoreHelper {
     int count = 0;
     for (var i = 0; i < utilityMatrix.length; i++) {
       double rating = utilityMatrix[i][columnIndex];
-      // Include a condition to check if rating is a valid number if necessary 
+      // Include a condition to check if rating is a valid number if necessary
       if (rating != 0.0) {
         sumScore += rating;
         count++;
@@ -562,8 +536,6 @@ class FirebaseFirestoreHelper {
 
   Future<List<List<double>>> normalizedUtilityMatrixY(
       List<List<double>> utilityMatrix) async {
-    // List<ProductModel> productList = await getBestProducts();
-    // List<UserModel> userList = await getAllUsers();
     int soCot = utilityMatrix[0].length;
     int soDong = utilityMatrix.length;
 
@@ -699,7 +671,6 @@ class FirebaseFirestoreHelper {
         .toInt();
   }
 
-// Function to suggest products for a user
   // Function to suggest products for a user
   Future<List<ProductModel>> suggestProductsForUser(String userID) async {
     List<ProductModel> allProducts =
