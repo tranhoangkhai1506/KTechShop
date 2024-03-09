@@ -30,84 +30,6 @@ class FirebaseFirestoreHelper {
     }
   }
 
-  Future<List<UserModel>> getAllUsers() async {
-    try {
-      QuerySnapshot<Map<String, dynamic>> querySnapshot =
-          await _firebaseFirestore.collection("users").get();
-      List<UserModel> usersList =
-          querySnapshot.docs.map((e) => UserModel.fromJson(e.data())).toList();
-      return usersList;
-    } catch (e) {
-      showMessage(e.toString());
-      return [];
-    }
-  }
-
-  Future<List<ProductModel>> getBestProducts() async {
-    QuerySnapshot<Map<String, dynamic>> querysnapshot_ratingList =
-        await _firebaseFirestore.collectionGroup("ratings").get();
-    List<RatingModel> ratingList = querysnapshot_ratingList.docs
-        .map((element) => RatingModel.fromJson(element.data()))
-        .toList();
-
-    QuerySnapshot<Map<String, dynamic>> querySnapshot_productList =
-        await _firebaseFirestore.collectionGroup("products").get();
-
-    List<ProductModel> productList = querySnapshot_productList.docs
-        .map((element) => ProductModel.fromJson(element.data()))
-        .toList();
-
-    Map<String, Map<String, double>> productRatingsMap = {};
-
-    for (var rating in ratingList) {
-      if (rating.rating != "0.0" && rating.rating.isNotEmpty) {
-        double numericRating = double.tryParse(rating.rating) ?? 0.0;
-
-        if (productRatingsMap.containsKey(rating.productId)) {
-          // Update sum and count for existing product
-          productRatingsMap[rating.productId]!['sum'] =
-              (productRatingsMap[rating.productId]!['sum'] ?? 0.0) +
-                  numericRating;
-          productRatingsMap[rating.productId]!['count'] =
-              (productRatingsMap[rating.productId]!['count'] ?? 0.0) + 1.0;
-        } else {
-          // Initialize sum and count for new product
-          productRatingsMap[rating.productId] = {
-            'sum': numericRating,
-            'count': 1.0
-          };
-        }
-      }
-    }
-
-    List<ProductModel> productsWithAverageRating = productList
-        .where((product) => productRatingsMap[product.id]?['sum'] != 0.0)
-        .map((product) {
-      double sumRating = productRatingsMap[product.id]?['sum'] ?? 0.0;
-      double countRating = productRatingsMap[product.id]?['count'] ?? 1.0;
-      double averageRating = countRating > 0 ? sumRating / countRating : 0.0;
-
-      // Round the averageRating to the nearest half
-      double roundedRating = (averageRating * 2).round() / 2;
-      // print(product.id + " " + roundedRating.toString());
-
-      return ProductModel(
-        image: product.image,
-        name: product.name,
-        id: product.id,
-        isFavourite: product.isFavourite,
-        price: product.price,
-        description: product.description,
-        status: product.status,
-        quantity: product.quantity,
-        averageRating: roundedRating,
-      );
-    }).toList();
-
-    // Điều kiện muốn lấy sản phẩm có ? sao trung bình
-    return productsWithAverageRating;
-  }
-
   Future<List<ProductModel>> getCategoryViewProduct(String id) async {
     try {
       QuerySnapshot<Map<String, dynamic>> querySnapshot =
@@ -715,6 +637,83 @@ class FirebaseFirestoreHelper {
     return suggestedProducts;
   }
 
+  Future<List<UserModel>> getAllUsers() async {
+    try {
+      QuerySnapshot<Map<String, dynamic>> querySnapshot =
+          await _firebaseFirestore.collection("users").get();
+      List<UserModel> usersList =
+          querySnapshot.docs.map((e) => UserModel.fromJson(e.data())).toList();
+      return usersList;
+    } catch (e) {
+      showMessage(e.toString());
+      return [];
+    }
+  }
+
+  Future<List<ProductModel>> getBestProducts() async {
+    QuerySnapshot<Map<String, dynamic>> querysnapshot_ratingList =
+        await _firebaseFirestore.collectionGroup("ratings").get();
+    List<RatingModel> ratingList = querysnapshot_ratingList.docs
+        .map((element) => RatingModel.fromJson(element.data()))
+        .toList();
+
+    QuerySnapshot<Map<String, dynamic>> querySnapshot_productList =
+        await _firebaseFirestore.collectionGroup("products").get();
+
+    List<ProductModel> productList = querySnapshot_productList.docs
+        .map((element) => ProductModel.fromJson(element.data()))
+        .toList();
+
+    Map<String, Map<String, double>> productRatingsMap = {};
+
+    for (var rating in ratingList) {
+      if (rating.rating != "0.0" && rating.rating.isNotEmpty) {
+        double numericRating = double.tryParse(rating.rating) ?? 0.0;
+
+        if (productRatingsMap.containsKey(rating.productId)) {
+          // Update sum and count for existing product
+          productRatingsMap[rating.productId]!['sum'] =
+              (productRatingsMap[rating.productId]!['sum'] ?? 0.0) +
+                  numericRating;
+          productRatingsMap[rating.productId]!['count'] =
+              (productRatingsMap[rating.productId]!['count'] ?? 0.0) + 1.0;
+        } else {
+          // Initialize sum and count for new product
+          productRatingsMap[rating.productId] = {
+            'sum': numericRating,
+            'count': 1.0
+          };
+        }
+      }
+    }
+
+    List<ProductModel> productsWithAverageRating = productList
+        .where((product) => productRatingsMap[product.id]?['sum'] != 0.0)
+        .map((product) {
+      double sumRating = productRatingsMap[product.id]?['sum'] ?? 0.0;
+      double countRating = productRatingsMap[product.id]?['count'] ?? 1.0;
+      double averageRating = countRating > 0 ? sumRating / countRating : 0.0;
+
+      // Round the averageRating to the nearest half
+      double roundedRating = (averageRating * 2).round() / 2;
+      // print(product.id + " " + roundedRating.toString());
+
+      return ProductModel(
+        image: product.image,
+        name: product.name,
+        id: product.id,
+        isFavourite: product.isFavourite,
+        price: product.price,
+        description: product.description,
+        status: product.status,
+        quantity: product.quantity,
+        averageRating: roundedRating,
+      );
+    }).toList();
+
+    // Điều kiện muốn lấy sản phẩm có ? sao trung bình
+    return productsWithAverageRating;
+  }
   /////////////////////////////////////////////////////////////////////////////
 
   String formatDate(DateTime date) {
