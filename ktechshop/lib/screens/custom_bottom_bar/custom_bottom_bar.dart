@@ -6,7 +6,7 @@ import 'package:ktechshop/screens/cart_screen/cart_screen.dart';
 
 import 'package:ktechshop/screens/home/home.dart';
 import 'package:ktechshop/screens/order_screen/order_screen.dart';
-import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
+import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 
 class CustomBottomBar extends StatefulWidget {
   const CustomBottomBar({final Key? key}) : super(key: key);
@@ -54,15 +54,8 @@ class _CustomBottomBarState extends State<CustomBottomBar> {
             : kBottomNavigationBarHeight,
         bottomScreenMargin: 0,
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        hideNavigationBar: _hideNavBar,
+        hideNavigationBarWhenKeyboardAppears: _hideNavBar,
         decoration: const NavBarDecoration(colorBehindNavBar: Colors.indigo),
-        itemAnimationProperties: const ItemAnimationProperties(
-          duration: Duration(milliseconds: 400),
-          curve: Curves.ease,
-        ),
-        screenTransitionAnimation: const ScreenTransitionAnimation(
-          animateTabTransition: true,
-        ),
         navBarStyle:
             NavBarStyle.style1, // Choose the nav bar style with this property
       ),

@@ -7,6 +7,7 @@ import 'package:ktechshop/firebase_helper/firebase_options/firebase_options.dart
 import 'package:ktechshop/provider/app_provider.dart';
 import 'package:ktechshop/screens/auth_ui/welcome/welcome.dart';
 import 'package:ktechshop/screens/custom_bottom_bar/custom_bottom_bar.dart';
+import 'package:ktechshop/screens/home/home.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
@@ -77,7 +78,7 @@ class _MyAppState extends State<MyApp> {
                     ],
                   ),
                 ),
-                nextScreen: Welcome(),
+                nextScreen: Home(),
               );
             }),
         theme: ThemeData.light(useMaterial3: true),
@@ -88,7 +89,8 @@ class _MyAppState extends State<MyApp> {
             brightness: Brightness.dark,
             canvasColor: Colors.purple,
             // ignore: deprecated_member_use
-            textTheme: TextTheme(headline6: TextStyle(color: Colors.white))),
+            textTheme:
+                TextTheme(headlineSmall: TextStyle(color: Colors.white))),
         themeMode: ThemeMode.system,
         debugShowCheckedModeBanner: false,
       ),

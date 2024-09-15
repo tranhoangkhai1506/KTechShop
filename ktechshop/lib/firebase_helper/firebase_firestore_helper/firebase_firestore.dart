@@ -48,13 +48,24 @@ class FirebaseFirestoreHelper {
     }
   }
 
-  Future<UserModel> getUserInformation() async {
-    DocumentSnapshot<Map<String, dynamic>> querySnapshot =
-        await _firebaseFirestore
-            .collection("users")
-            .doc(FirebaseAuth.instance.currentUser!.uid)
-            .get();
-    return UserModel.fromJson(querySnapshot.data()!);
+  Future<UserModel?> getUserInformation() async {
+    if (FirebaseAuth.instance.currentUser != null) {
+      DocumentSnapshot<Map<String, dynamic>> querySnapshot =
+          await _firebaseFirestore
+              .collection("users")
+              .doc(FirebaseAuth.instance.currentUser!.uid)
+              .get();
+
+      // Kiểm tra nếu dữ liệu là null
+      if (querySnapshot.data() != null) {
+        return UserModel.fromJson(querySnapshot.data()!);
+      } else {
+        // Trường hợp dữ liệu trả về là null
+        return null;
+      }
+    }
+    // Trường hợp người dùng không đăng nhập
+    return null;
   }
 
   Future<bool> uploadOrderProductFirebase(List<ProductModel> list,
@@ -151,9 +162,11 @@ class FirebaseFirestoreHelper {
     }
   }
 
-  void updateTokenFromFirebase() async {
+  Future<void> updateTokenFromFirebase() async {
     String? token = await FirebaseMessaging.instance.getToken();
-    if (token != null) {
+
+    // Kiểm tra xem người dùng đã đăng nhập hay chưa
+    if (token != null && FirebaseAuth.instance.currentUser != null) {
       await _firebaseFirestore
           .collection("users")
           .doc(FirebaseAuth.instance.currentUser!.uid)
