@@ -30,36 +30,31 @@ class FirebaseAuthHelper {
         idToken: googleAuth.idToken,
       );
       try {
-        // ignore: unused_local_variable
         final UserCredential userCredential =
             await _auth.signInWithCredential(credential);
+
         final userId = _auth.currentUser!.uid;
         final userDoc =
             await _firebaseFirestore.collection("users").doc(userId).get();
+
         if (userDoc.exists) {
-          // Người dùng đã tồn tại
-          // ignore: avoid_print
           print("Người dùng đã tồn tại.");
         } else {
-          // Người dùng chưa tồn tại
           UserModel userModel = UserModel(
-              id: _auth.currentUser!.uid,
-              name: _auth.currentUser!.displayName,
-              email: _auth.currentUser!.email,
-              phone: _auth.currentUser!.phoneNumber != "null"
-                  ? "null"
-                  : _auth.currentUser!.phoneNumber,
-              address: null,
-              image: _auth.currentUser!.photoURL);
-          _firebaseFirestore
+            id: _auth.currentUser!.uid,
+            name: _auth.currentUser!.displayName ?? "No name",
+            email: _auth.currentUser!.email ?? "No email",
+            phone: _auth.currentUser!.phoneNumber ?? "No phone number",
+            address: null,
+            image: _auth.currentUser!.photoURL ?? "No image",
+          );
+          await _firebaseFirestore
               .collection("users")
               .doc(userModel.id)
               .set(userModel.toJson());
         }
         return true;
       } catch (e) {
-        // Xử lý lỗi
-        // ignore: avoid_print
         print("Lỗi đăng nhập bằng Google: $e");
         return false;
       }

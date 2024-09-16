@@ -78,7 +78,7 @@ class _MyAppState extends State<MyApp> {
                     ],
                   ),
                 ),
-                nextScreen: Home(),
+                nextScreen: Welcome(),
               );
             }),
         theme: ThemeData.light(useMaterial3: true),
