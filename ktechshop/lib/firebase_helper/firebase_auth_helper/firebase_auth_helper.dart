@@ -29,10 +29,12 @@ class FirebaseAuthHelper {
         accessToken: googleAuth.accessToken,
         idToken: googleAuth.idToken,
       );
+      print(credential.token);
       try {
+        print('4');
         final UserCredential userCredential =
             await _auth.signInWithCredential(credential);
-
+        print('5');
         final userId = _auth.currentUser!.uid;
         final userDoc =
             await _firebaseFirestore.collection("users").doc(userId).get();

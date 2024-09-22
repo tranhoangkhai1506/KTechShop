@@ -15,27 +15,33 @@ class ChatScreen extends StatefulWidget {
 }
 
 Future<String> generateResponse(String prompt) async {
-  const apiKey = ""; // Tạo Key ở platform.openai rồi thêm vào.
-  var url = Uri.https("api.openai.com", "/v1/completions");
+  const apiKey = ""; // Thêm OpenAI API Key của bạn vào đây.
+
+  var url = Uri.https("api.openai.com", "/v1/chat/completions");
+
   final response = await http.post(
     url,
     headers: {
       "Content-Type": "application/json",
-      "Authorization": "Bearer $apiKey"
+      "Authorization": "Bearer $apiKey",
     },
     body: json.encode({
-      "model": "text-davinci-003",
-      "prompt": prompt,
-      "temperature": 1,
-      "max_tokens": 4000,
-      "top_p": 1,
-      "frequency_penalty": 0.0,
-      "presence_penalty": 0.0
+      "model": "gpt-4o", // Thay đổi model theo yêu cầu
+      "messages": [
+        {"role": "user", "content": prompt}
+      ]
     }),
   );
 
-  Map<String, dynamic> newresponse = jsonDecode(response.body);
-  return newresponse['choices'][0]['text'];
+  // Kiểm tra nếu request thành công
+  if (response.statusCode == 200) {
+    Map<String, dynamic> jsonResponse = jsonDecode(response.body);
+    String assistantMessage = jsonResponse['choices'][0]['message']['content'];
+    return assistantMessage;
+  } else {
+    // Xử lý khi request thất bại
+    throw Exception('Failed to generate response: ${response.statusCode}');
+  }
 }
 
 class _ChatScreenState extends State<ChatScreen> {
